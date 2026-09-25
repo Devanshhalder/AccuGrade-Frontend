@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pariksha Setu | Admin Command Center</title>
+
+    <!-- YOUR EXISTING CSS -->
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <!-- BRAND -->
+        <div class="brand">
+
+            <div class="brand-mark">
+                PS
+            </div>
+
+            <div>
+                <h2>Pariksha Setu</h2>
+                <span>Digital Evaluation</span>
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+        <div class="workspace-label">
+            WORKSPACE
+        </div>
+
+        <nav>
+
+            <button
+                class="nav-link active"
+                data-page="dashboard">
+
+                <span>⌂</span>
+                Dashboard
+
+            </button>
+
+
+            <button
+                class="nav-link"
+                data-page="batches">
+
+                <span>◈</span>
+                Evaluation Batches
+
+            </button>
+
+
+            <button
+                class="nav-link"
+                data-page="sheets">
+
+                <span>▤</span>
+                Answer Sheets
+
+            </button>
+
+
+            <button
+                class="nav-link"
+                data-page="evaluators">
+
+                <span>◎</span>
+                Evaluators
+
+            </button>
+
+
+            <button
+                class="nav-link"
+                data-page="ai-review">
+
+                <span>✦</span>
+                AI Review
+
+            </button>
+
+
+            <button
+                class="nav-link"
+                data-page="reports">
+
+                <span>⌁</span>
+                Reports
+
+            </button>
+
+        </nav>
+
+
+        <!-- AI STATUS -->
+
+        <div class="ai-status">
+
+            <div class="ai-orbit">
+
+                <div class="orbit-core">
+                    ✦
+                </div>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    AI Engine
+                </strong>
+
+                <small>
+                    <span class="status-dot"></span>
+                    Operational
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- ADMIN PROFILE -->
+
+        <div class="sidebar-bottom">
+
+            <div class="admin-profile">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <div>
+
+                    <strong>
+                        Administrator
+                    </strong>
+
+                    <small>
+                        System Admin
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <button class="logout">
+                ↪ Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="system-pill">
+
+                <span></span>
+
+                LIVE EVALUATION SYSTEM
+
+            </div>
+
+
+            <div class="top-actions">
+
+    <!-- =================================
+         LANGUAGE SELECTOR
+    ================================== -->
+
+    <div
+        class="language-selector"
+        id="languageSelector"
+    >
+
+        <button
+            type="button"
+            class="language-button"
+            id="languageButton"
+            aria-label="Change language"
+            aria-expanded="false"
+        >
+
+            <span class="language-globe">
+                ◎
+            </span>
+
+            <span class="language-current">
+                English
+            </span>
+
+            <span class="language-arrow">
+                ▾
+            </span>
+
+        </button>
+
+
+        <div
+            class="language-menu"
+            id="languageMenu"
+        >
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="en"
+            >
+                English
+            </button>
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="hi"
+            >
+                हिन्दी
+            </button>
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="pa"
+            >
+                ਪੰਜਾਬੀ
+            </button>
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="mr"
+            >
+                मराठी
+            </button>
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="gu"
+            >
+                ગુજરાતી
+            </button>
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="bn"
+            >
+                বাংলা
+            </button>
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="ta"
+            >
+                தமிழ்
+            </button>
+
+            <button
+                type="button"
+                class="language-option"
+                data-language="te"
+            >
+                తెలుగు
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXISTING NOTIFICATION -->
+
+    <button class="icon-button">
+
+        ♢
+
+        <i></i>
+
+    </button>
+
+
+                <div class="top-user">
+
+                    <div class="avatar">
+                        A
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Administrator
+                        </strong>
+
+                        <small>
+                            Admin
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section
+            id="dashboard"
+            class="page active">
+
+
+            <!-- HERO -->
+
+            <div class="command-hero">
+
+                <div class="hero-grid"></div>
+
+
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+                        AI EXAMINATION COMMAND CENTER
+                    </div>
+
+
+                    <h1>
+                        Run your entire
+                        <span>
+                            evaluation ecosystem.
+                        </span>
+                    </h1>
+
+
+                    <p>
+                        Manage answer sheets, evaluators,
+                        AI-assisted marking and moderation
+                        from one intelligent workspace.
+                    </p>
+
+
+                    <!-- MAJOR ACTION -->
+
+                    <button
+                        class="create-batch-btn"
+                        data-page="create-batch">
+
+                        <span class="plus">
+                            ＋
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Create New Evaluation Batch
+                            </strong>
+
+                            <small>
+                                Start a new examination workflow
+                            </small>
+
+                        </span>
+
+                        <b>
+                            →
+                        </b>
+
+                    </button>
+
+                </div>
+
+
+                <!-- AI VISUAL -->
+
+                <div class="ai-visual">
+
+                    <div class="visual-ring ring-one"></div>
+
+                    <div class="visual-ring ring-two"></div>
+
+                    <div class="visual-ring ring-three"></div>
+
+
+                    <div class="ai-brain">
+                        ✦
+                    </div>
+
+
+                    <div class="floating-node node-one">
+                        OCR
+                    </div>
+
+                    <div class="floating-node node-two">
+                        AI
+                    </div>
+
+                    <div class="floating-node node-three">
+                        QA
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 METRICS
+            ================================================== -->
+
+            <div class="metrics">
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon blue">
+                        ▤
+                    </div>
+
+                    <span>
+                        Answer Sheets
+                    </span>
+
+                    <strong>
+                        1,240
+                    </strong>
+
+                    <small>
+                        <b>
+                            +18%
+                        </b>
+                        this batch
+                    </small>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon green">
+                        ✓
+                    </div>
+
+                    <span>
+                        Evaluated
+                    </span>
+
+                    <strong>
+                        864
+                    </strong>
+
+                    <small>
+                        <b>
+                            69.7%
+                        </b>
+                        completed
+                    </small>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon orange">
+                        ◷
+                    </div>
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong>
+                        376
+                    </strong>
+
+                    <small>
+                        Awaiting evaluation
+                    </small>
+
+                </div>
+
+
+                <div class="metric-card ai-card">
+
+                    <div class="metric-icon purple">
+                        ✦
+                    </div>
+
+                    <span>
+                        AI Attention
+                    </span>
+
+                    <strong>
+                        28
+                    </strong>
+
+                    <small>
+                        Items need review
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DASHBOARD COMMAND GRID
+            ================================================== -->
+
+            <div class="command-grid">
+
+
+                <!-- EVALUATION PULSE -->
+
+                <div class="panel progress-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+
+                            <span class="section-tag">
+                                LIVE
+                            </span>
+
+                            <h2>
+                                Evaluation Pulse
+                            </h2>
+
+                            <p>
+                                Real-time evaluation activity
+                            </p>
+
+                        </div>
+
+
+                        <span class="live-indicator">
+
+                            <i></i>
+
+                            LIVE
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-content">
+
+
+                        <div class="donut">
+
+                            <div>
+
+                                <strong>
+                                    70%
+                                </strong>
+
+                                <span>
+                                    COMPLETE
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="progress-stats">
+
+
+                            <div>
+
+                                <span>
+                                    <i class="green-dot"></i>
+                                    Evaluated
+                                </span>
+
+                                <strong>
+                                    864
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    <i class="orange-dot"></i>
+                                    Pending
+                                </span>
+
+                                <strong>
+                                    376
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    <i class="red-dot"></i>
+                                    AI Flagged
+                                </span>
+
+                                <strong>
+                                    28
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- AI INTELLIGENCE -->
+
+                <div class="panel ai-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+
+                            <span class="section-tag purple-tag">
+                                AI MONITOR
+                            </span>
+
+                            <h2>
+                                Intelligence Feed
+                            </h2>
+
+                            <p>
+                                Things that need attention
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            data-page="ai-review">
+
+                            View all →
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="ai-feed">
+
+
+                        <div class="feed-item warning">
+
+                            <div class="feed-icon">
+                                !
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Unchecked answers
+                                </strong>
+
+                                <small>
+                                    11 sheets detected
+                                </small>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </div>
+
+
+                        <div class="feed-item danger">
+
+                            <div class="feed-icon">
+                                △
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Marking anomalies
+                                </strong>
+
+                                <small>
+                                    9 evaluations flagged
+                                </small>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </div>
+
+
+                        <div class="feed-item purple">
+
+                            <div class="feed-icon">
+                                ✦
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Moderation required
+                                </strong>
+
+                                <small>
+                                    8 evaluations pending
+                                </small>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ACTIVE BATCHES
+            ================================================== -->
+
+            <div class="panel batches-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <span class="section-tag">
+                            WORKFLOW
+                        </span>
+
+                        <h2>
+                            Active Evaluation Batches
+                        </h2>
+
+                        <p>
+                            Current examination projects
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        data-page="batches">
+
+                        Manage batches →
+
+                    </button>
+
+                </div>
+
+
+                <div class="batch-list">
+
+
+                    <!-- BATCH 1 -->
+
+                    <div class="batch-row">
+
+                        <div class="batch-main">
+
+                            <div class="subject-icon">
+                                M
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Engineering Mathematics
+                                </strong>
+
+                                <small>
+                                    B.Tech · Semester VI · 300 sheets
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="batch-progress">
+
+                            <div>
+
+                                <span>
+                                    82%
+                                </span>
+
+                                <small>
+                                    246 / 300
+                                </small>
+
+                            </div>
+
+                            <div class="bar">
+
+                                <i
+                                    style="width:82%">
+                                </i>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="batch-status active-status">
+                            Evaluating
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- BATCH 2 -->
+
+                    <div class="batch-row">
+
+                        <div class="batch-main">
+
+                            <div class="subject-icon physics">
+                                P
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Engineering Physics
+                                </strong>
+
+                                <small>
+                                    B.Sc · Semester IV · 250 sheets
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="batch-progress">
+
+                            <div>
+
+                                <span>
+                                    100%
+                                </span>
+
+                                <small>
+                                    250 / 250
+                                </small>
+
+                            </div>
+
+                            <div class="bar">
+
+                                <i
+                                    style="width:100%">
+                                </i>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="batch-status completed-status">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CREATE NEW EVALUATION BATCH
+        ================================================== -->
+
+        <section
+            id="create-batch"
+            class="page">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="section-tag">
+                        NEW WORKFLOW
+                    </span>
+
+                    <h1>
+                        Create Evaluation Batch
+                    </h1>
+
+                    <p>
+                        Start a complete digital examination
+                        evaluation project.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STEPPER -->
+
+            <div class="stepper">
+
+
+                <div class="step active">
+
+                    <span>
+                        01
+                    </span>
+
+                    Batch
+
+                </div>
+
+
+                <div class="step">
+
+                    <span>
+                        02
+                    </span>
+
+                    Answer Key
+
+                </div>
+
+
+                <div class="step">
+
+                    <span>
+                        03
+                    </span>
+
+                    Answer Sheets
+
+                </div>
+
+
+                <div class="step">
+
+                    <span>
+                        04
+                    </span>
+
+                    Evaluators
+
+                </div>
+
+
+                <div class="step">
+
+                    <span>
+                        05
+                    </span>
+
+                    Launch
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="creation-grid">
+
+
+                <!-- =================================================
+                     LEFT SIDE
+                ================================================== -->
+
+                <div class="creation-main">
+
+
+                    <!-- BATCH INFORMATION -->
+
+                    <div class="creation-card">
+
+                        <h2>
+                            Batch Information
+                        </h2>
+
+                        <p class="card-description">
+                            Create the identity of this examination
+                            evaluation project.
+                        </p>
+
+
+                        <div class="form-grid">
+
+
+                            <label>
+
+                                Batch Name
+
+                                <input
+                                    type="text"
+                                    placeholder="e.g. B.Tech Mathematics — Sem VI">
+
+                            </label>
+
+
+                            <label>
+
+                                Subject
+
+                                <input
+                                    type="text"
+                                    placeholder="e.g. Engineering Mathematics">
+
+                            </label>
+
+
+                            <label>
+
+                                Examination
+
+                                <input
+                                    type="text"
+                                    placeholder="e.g. End Semester Examination 2026">
+
+                            </label>
+
+
+                            <label>
+
+                                Maximum Marks
+
+                                <input
+                                    type="number"
+                                    placeholder="100">
+
+                            </label>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ANSWER KEY -->
+
+                    <div class="creation-card upload-card">
+
+                        <div class="upload-heading">
+
+                            <div>
+
+                                <h2>
+                                    Official Answer Key
+                                </h2>
+
+                                <p class="card-description">
+                                    Upload the official answer key
+                                    and marking scheme.
+                                </p>
+
+                            </div>
+
+
+                            <span class="ai-badge">
+                                ✦ AI EXTRACTION
+                            </span>
+
+                        </div>
+
+
+                        <div class="dropzone">
+
+                            <div class="upload-icon">
+                                ↑
+                            </div>
+
+
+                            <strong>
+                                Drop answer key here
+                            </strong>
+
+
+                            <span>
+                                PDF, JPG or PNG · Max 25 MB
+                            </span>
+
+
+                            <button>
+                                Browse files
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ANSWER SHEETS -->
+
+                    <div class="creation-card upload-card">
+
+                        <div class="upload-heading">
+
+                            <div>
+
+                                <h2>
+                                    Student Answer Sheets
+                                </h2>
+
+                                <p class="card-description">
+                                    Upload scanned digital answer
+                                    sheets in bulk.
+                                </p>
+
+                            </div>
+
+
+                            <span class="ai-badge">
+                                ✦ OCR READY
+                            </span>
+
+                        </div>
+
+
+                        <div class="dropzone">
+
+                            <div class="upload-icon">
+                                ↑
+                            </div>
+
+
+                            <strong>
+                                Drop answer sheets here
+                            </strong>
+
+
+                            <span>
+                                Multiple PDF files supported
+                            </span>
+
+
+                            <button>
+                                Upload sheets
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RIGHT SIDE
+                ================================================== -->
+
+                <aside class="creation-side">
+
+
+                    <!-- EVALUATORS -->
+
+                    <div class="assign-card">
+
+                        <span class="section-tag">
+                            EVALUATION TEAM
+                        </span>
+
+
+                        <h2>
+                            Assign Evaluators
+                        </h2>
+
+
+                        <p>
+                            Select teachers who will evaluate
+                            this examination batch.
+                        </p>
+
+
+                        <!-- TEACHER 1 -->
+
+                        <div class="teacher">
+
+                            <div class="avatar teacher-avatar">
+                                RS
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Dr. Raj Sharma
+                                </strong>
+
+                                <small>
+                                    Mathematics
+                                </small>
+
+                            </div>
+
+
+                            <input
+                                type="checkbox"
+                                checked>
+
+                        </div>
+
+
+                        <!-- TEACHER 2 -->
+
+                        <div class="teacher">
+
+                            <div class="avatar teacher-avatar">
+                                AP
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Prof. Anjali Patel
+                                </strong>
+
+                                <small>
+                                    Mathematics
+                                </small>
+
+                            </div>
+
+
+                            <input
+                                type="checkbox">
+
+                        </div>
+
+
+                        <!-- TEACHER 3 -->
+
+                        <div class="teacher">
+
+                            <div class="avatar teacher-avatar">
+                                VK
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Dr. Vivek Kumar
+                                </strong>
+
+                                <small>
+                                    Mathematics
+                                </small>
+
+                            </div>
+
+
+                            <input
+                                type="checkbox">
+
+                        </div>
+
+
+                        <button class="assign-button">
+                            + Add Evaluator
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- AI CONFIGURATION -->
+
+                    <div class="ai-config">
+
+                        <span class="section-tag purple-tag">
+                            AI CONFIGURATION
+                        </span>
+
+
+                        <h2>
+                            Intelligent Evaluation
+                        </h2>
+
+
+                        <!-- AI MARKING -->
+
+                        <label class="toggle-row">
+
+                            <span>
+
+                                AI-assisted marking
+
+                                <small>
+                                    Compare answers with key
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                checked>
+
+                        </label>
+
+
+                        <!-- UNCHECKED ANSWERS -->
+
+                        <label class="toggle-row">
+
+                            <span>
+
+                                Detect unchecked answers
+
+                                <small>
+                                    Automatically flag omissions
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                checked>
+
+                        </label>
+
+
+                        <!-- ANOMALIES -->
+
+                        <label class="toggle-row">
+
+                            <span>
+
+                                Detect marking anomalies
+
+                                <small>
+                                    Identify unusual scoring
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                checked>
+
+                        </label>
+
+
+                        <!-- UNUSUAL SCORING -->
+
+                        <label class="toggle-row">
+
+                            <span>
+
+                                Detect unusual scoring
+
+                                <small>
+                                    Flag inconsistent evaluation
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                checked>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <!-- LAUNCH -->
+
+                    <button class="launch-button">
+
+                        <span>
+                            ✦
+                        </span>
+
+                        Launch Evaluation Batch
+
+                        <b>
+                            →
+                        </b>
+
+                    </button>
+
+
+                </aside>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             EVALUATION BATCHES
+        ================================================== -->
+
+        <section
+            id="batches"
+            class="page simple-page">
+
+            <span class="section-tag">
+                WORKFLOW
+            </span>
+
+
+            <h1>
+                Evaluation Batches
+            </h1>
+
+
+            <p>
+                Manage active and completed examination
+                evaluation projects.
+            </p>
+
+
+            <button
+                class="big-action"
+                data-page="create-batch">
+
+                ＋ Create New Evaluation Batch
+
+            </button>
+
+
+            <div class="panel">
+
+                <h2>
+                    Current Projects
+                </h2>
+
+
+                <div class="batch-list">
+
+
+                    <div class="batch-row">
+
+                        <div class="batch-main">
+
+                            <div class="subject-icon">
+                                M
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Engineering Mathematics
+                                </strong>
+
+                                <small>
+                                    B.Tech · Semester VI
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="batch-progress">
+
+                            <div>
+
+                                <span>
+                                    82%
+                                </span>
+
+                                <small>
+                                    246 / 300
+                                </small>
+
+                            </div>
+
+                            <div class="bar">
+
+                                <i
+                                    style="width:82%">
+                                </i>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="batch-status active-status">
+                            Evaluating
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ANSWER SHEETS
+        ================================================== -->
+
+        <section
+            id="sheets"
+            class="page simple-page">
+
+            <span class="section-tag">
+                DIGITAL EVALUATION
+            </span>
+
+
+            <h1>
+                Answer Sheets
+            </h1>
+
+
+            <p>
+                Review and manage digitally submitted
+                answer sheets.
+            </p>
+
+
+            <div class="panel">
+
+                <h2>
+                    Answer Sheet Processing
+                </h2>
+
+                <p>
+                    Uploaded sheets, OCR processing,
+                    evaluation status and flagged responses
+                    will appear here.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             EVALUATORS
+        ================================================== -->
+
+        <section
+            id="evaluators"
+            class="page simple-page">
+
+            <span class="section-tag">
+                EXAMINERS
+            </span>
+
+
+            <h1>
+                Evaluator Management
+            </h1>
+
+
+            <p>
+                Manage teacher assignments and
+                evaluation workloads.
+            </p>
+
+
+            <div class="panel">
+
+                <h2>
+                    Evaluation Team
+                </h2>
+
+
+                <div class="teacher">
+
+                    <div class="avatar teacher-avatar">
+                        RS
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Dr. Raj Sharma
+                        </strong>
+
+                        <small>
+                            Mathematics · 120 assigned sheets
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="teacher">
+
+                    <div class="avatar teacher-avatar">
+                        AP
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Prof. Anjali Patel
+                        </strong>
+
+                        <small>
+                            Mathematics · 96 assigned sheets
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             AI REVIEW
+        ================================================== -->
+
+        <section
+            id="ai-review"
+            class="page simple-page">
+
+            <span class="section-tag purple-tag">
+                AI INTELLIGENCE
+            </span>
+
+
+            <h1>
+                AI Review Center
+            </h1>
+
+
+            <p>
+                Review AI-detected anomalies,
+                unchecked answers and unusual scoring.
+            </p>
+
+
+            <div class="command-grid">
+
+
+                <div class="panel">
+
+                    <span class="section-tag">
+                        11 FLAGS
+                    </span>
+
+                    <h2>
+                        Unchecked Answers
+                    </h2>
+
+                    <p>
+                        AI detected potentially unanswered
+                        questions in submitted sheets.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <span class="section-tag">
+                        9 FLAGS
+                    </span>
+
+                    <h2>
+                        Marking Anomalies
+                    </h2>
+
+                    <p>
+                        Evaluations requiring examiner
+                        or moderator review.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             REPORTS
+        ================================================== -->
+
+        <section
+            id="reports"
+            class="page simple-page">
+
+            <span class="section-tag">
+                ANALYTICS
+            </span>
+
+
+            <h1>
+                Reports & Analytics
+            </h1>
+
+
+            <p>
+                Generate evaluation and examiner
+                performance reports.
+            </p>
+
+
+            <div class="command-grid">
+
+
+                <div class="panel">
+
+                    <h2>
+                        Evaluation Analytics
+                    </h2>
+
+                    <p>
+                        Completion rates, pending evaluations,
+                        AI flags and result processing.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h2>
+                        Examiner Performance
+                    </h2>
+
+                    <p>
+                        Evaluation workload,
+                        consistency and moderation activity.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     YOUR EXISTING JAVASCRIPT
+====================================================== -->
+
+<script src="language.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>

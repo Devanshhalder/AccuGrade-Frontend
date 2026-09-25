@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pariksha Setu | Evaluator</title>
+
+    <link rel="stylesheet" href="evaluator.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         APP SHELL
+    ====================================================== -->
+
+    <div class="app-shell">
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-mark">
+                    PS
+                </div>
+
+                <div class="brand-copy">
+                    <strong>Pariksha Setu</strong>
+                    <span>Digital Evaluation</span>
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-section-label">
+                EVALUATOR
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <button class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </button>
+
+                <button class="nav-item" data-section="assigned">
+                    <span class="nav-icon">▤</span>
+                    <span>Assigned Sheets</span>
+                </button>
+
+                <button class="nav-item" data-section="completed">
+                    <span class="nav-icon">✓</span>
+                    <span>Completed</span>
+                </button>
+
+                <button class="nav-item" data-section="ai-assistance">
+                    <span class="nav-icon">✦</span>
+                    <span>AI Assistance</span>
+                </button>
+
+            </nav>
+
+
+            <!-- AI STATUS -->
+
+            <div class="ai-status-card">
+
+                <div class="ai-status-icon">
+                    ✦
+                </div>
+
+                <div class="ai-status-content">
+                    <strong>AI Engine</strong>
+
+                    <span>
+                        <i></i>
+                        Operational
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- USER -->
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    E
+                </div>
+
+                <div class="user-details">
+                    <strong>Evaluator</strong>
+                    <span>Examiner</span>
+                </div>
+
+                <button
+                    class="logout-button"
+                    id="logoutButton"
+                    title="Logout"
+                >
+                    ↪
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN AREA
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <div class="system-status">
+                        <span></span>
+                        EVALUATION WORKSPACE
+                    </div>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <!-- LANGUAGE -->
+
+                    <div
+                        class="language-selector"
+                        id="languageSelector"
+                    >
+
+                        <button
+                            type="button"
+                            class="language-button"
+                            id="languageButton"
+                            aria-label="Change language"
+                            aria-expanded="false"
+                        >
+
+                            <span class="language-globe">
+                                ◎
+                            </span>
+
+                            <span class="language-current">
+                                English
+                            </span>
+
+                            <span class="language-arrow">
+                                ▾
+                            </span>
+
+                        </button>
+
+
+                        <div
+                            class="language-menu"
+                            id="languageMenu"
+                        >
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="en"
+                            >
+                                English
+                            </button>
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="hi"
+                            >
+                                हिन्दी
+                            </button>
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="pa"
+                            >
+                                ਪੰਜਾਬੀ
+                            </button>
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="mr"
+                            >
+                                मराठी
+                            </button>
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="gu"
+                            >
+                                ગુજરાતી
+                            </button>
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="bn"
+                            >
+                                বাংলা
+                            </button>
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="ta"
+                            >
+                                தமிழ்
+                            </button>
+
+                            <button
+                                type="button"
+                                class="language-option"
+                                data-language="te"
+                            >
+                                తెలుగు
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOTIFICATION -->
+
+                    <button
+                        class="notification-button"
+                        id="notificationButton"
+                        aria-label="Notifications"
+                    >
+                        ♢
+                        <span></span>
+                    </button>
+
+
+                    <!-- PROFILE -->
+
+                    <div class="top-profile">
+
+                        <div class="top-avatar">
+                            E
+                        </div>
+
+                        <div class="top-profile-info">
+
+                            <strong>
+                                Evaluator
+                            </strong>
+
+                            <span>
+                                Examiner
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <section
+                class="page-section active"
+                id="dashboardSection"
+            >
+
+
+                <!-- PAGE HEADER -->
+
+                <div class="page-header">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            EVALUATOR WORKSPACE
+                        </div>
+
+                        <h1>
+                            Review. Evaluate. <span>Verify.</span>
+                        </h1>
+
+                        <p>
+                            Evaluate assigned answer sheets with
+                            AI-assisted marking and transparent review.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-button"
+                        id="openAssignedButton"
+                    >
+
+                        <span class="button-icon">
+                            +
+                        </span>
+
+                        Open Assigned Sheets
+
+                        <span class="button-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     STATISTICS
+                ================================================== -->
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-label">
+                                ASSIGNED
+                            </span>
+
+                            <div class="stat-icon blue">
+                                ▤
+                            </div>
+
+                        </div>
+
+                        <strong class="stat-number">
+                            50
+                        </strong>
+
+                        <span class="stat-description">
+                            Answer sheets assigned
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-label">
+                                COMPLETED
+                            </span>
+
+                            <div class="stat-icon green">
+                                ✓
+                            </div>
+
+                        </div>
+
+                        <strong class="stat-number">
+                            32
+                        </strong>
+
+                        <span class="stat-description success-text">
+                            64% completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-label">
+                                PENDING
+                            </span>
+
+                            <div class="stat-icon orange">
+                                ◷
+                            </div>
+
+                        </div>
+
+                        <strong class="stat-number">
+                            18
+                        </strong>
+
+                        <span class="stat-description">
+                            Awaiting evaluation
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-label">
+                                AI ASSISTED
+                            </span>
+
+                            <div class="stat-icon purple">
+                                ✦
+                            </div>
+
+                        </div>
+
+                        <strong class="stat-number">
+                            32
+                        </strong>
+
+                        <span class="stat-description">
+                            Evaluations with AI assistance
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     WORKSPACE GRID
+                ================================================== -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- EVALUATION PROGRESS -->
+
+                    <div class="panel progress-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <span class="panel-eyebrow">
+                                    YOUR PROGRESS
+                                </span>
+
+                                <h2>
+                                    Evaluation Activity
+                                </h2>
+
+                                <p>
+                                    Current evaluation workload
+                                </p>
+
+                            </div>
+
+                            <span class="live-badge">
+                                <i></i>
+                                LIVE
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress-content">
+
+                            <div class="progress-ring">
+
+                                <div class="progress-ring-inner">
+
+                                    <strong>
+                                        64%
+                                    </strong>
+
+                                    <span>
+                                        completed
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="progress-details">
+
+                                <div class="progress-row">
+
+                                    <span>
+                                        Assigned
+                                    </span>
+
+                                    <strong>
+                                        50
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress-row">
+
+                                    <span>
+                                        Completed
+                                    </span>
+
+                                    <strong class="green-text">
+                                        32
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress-row">
+
+                                    <span>
+                                        Pending
+                                    </span>
+
+                                    <strong class="orange-text">
+                                        18
+                                    </strong>
+
+                                </div>
+
+                                <div class="progress-bar">
+
+                                    <span style="width: 64%;"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AI ASSISTANCE -->
+
+                    <div class="panel ai-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <span class="panel-eyebrow purple-eyebrow">
+                                    AI ASSISTANCE
+                                </span>
+
+                                <h2>
+                                    Intelligent Evaluation
+                                </h2>
+
+                                <p>
+                                    AI supports your marking decisions.
+                                </p>
+
+                            </div>
+
+                            <div class="ai-mini-icon">
+                                ✦
+                            </div>
+
+                        </div>
+
+
+                        <div class="ai-features">
+
+                            <div class="ai-feature">
+
+                                <div class="feature-icon">
+                                    ✓
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Rubric matching
+                                    </strong>
+
+                                    <span>
+                                        Compare answers against the
+                                        evaluation rubric.
+                                    </span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="ai-feature">
+
+                                <div class="feature-icon">
+                                    ◇
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Answer analysis
+                                    </strong>
+
+                                    <span>
+                                        Identify relevant concepts
+                                        and key points.
+                                    </span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="ai-feature">
+
+                                <div class="feature-icon">
+                                    !
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Anomaly detection
+                                    </strong>
+
+                                    <span>
+                                        Flag unusual or inconsistent
+                                        marking patterns.
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ASSIGNED ANSWER SHEETS
+                ================================================== -->
+
+                <div class="panel sheets-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="panel-eyebrow">
+                                WORK QUEUE
+                            </span>
+
+                            <h2>
+                                Assigned Answer Sheets
+                            </h2>
+
+                            <p>
+                                Review and evaluate your assigned
+                                examination papers.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="secondary-button"
+                            id="viewAllButton"
+                        >
+                            View all →
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        CANDIDATE
+                                    </th>
+
+                                    <th>
+                                        EXAM
+                                    </th>
+
+                                    <th>
+                                        QUESTIONS
+                                    </th>
+
+                                    <th>
+                                        STATUS
+                                    </th>
+
+                                    <th>
+                                        ACTION
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="candidate-cell">
+
+                                            <div class="candidate-avatar">
+                                                52
+                                            </div>
+
+                                            <div>
+                                                <strong>
+                                                    Candidate #10452
+                                                </strong>
+
+                                                <span>
+                                                    Answer Sheet
+                                                </span>
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        B.Tech Mathematics
+                                    </td>
+
+
+                                    <td>
+                                        10
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status pending">
+                                            Pending
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <button
+                                            class="table-action evaluate-action"
+                                            data-candidate="10452"
+                                        >
+                                            Evaluate →
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="candidate-cell">
+
+                                            <div class="candidate-avatar">
+                                                53
+                                            </div>
+
+                                            <div>
+                                                <strong>
+                                                    Candidate #10453
+                                                </strong>
+
+                                                <span>
+                                                    Answer Sheet
+                                                </span>
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        B.Tech Mathematics
+                                    </td>
+
+
+                                    <td>
+                                        10
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status completed">
+                                            Completed
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <button
+                                            class="table-action view-action"
+                                            data-candidate="10453"
+                                        >
+                                            View →
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="candidate-cell">
+
+                                            <div class="candidate-avatar">
+                                                54
+                                            </div>
+
+                                            <div>
+                                                <strong>
+                                                    Candidate #10454
+                                                </strong>
+
+                                                <span>
+                                                    Answer Sheet
+                                                </span>
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        B.Tech Mathematics
+                                    </td>
+
+
+                                    <td>
+                                        10
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status pending">
+                                            Pending
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <button
+                                            class="table-action evaluate-action"
+                                            data-candidate="10454"
+                                        >
+                                            Evaluate →
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 ASSIGNED SHEETS PAGE
+            ================================================== -->
+
+            <section
+                class="page-section"
+                id="assignedSection"
+            >
+
+                <div class="page-header simple">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            WORK QUEUE
+                        </div>
+
+                        <h1>
+                            Assigned <span>Answer Sheets</span>
+                        </h1>
+
+                        <p>
+                            Answer sheets currently assigned to you.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="empty-placeholder">
+
+                        <div class="placeholder-icon">
+                            ▤
+                        </div>
+
+                        <h2>
+                            Assigned Answer Sheets
+                        </h2>
+
+                        <p>
+                            Your assigned answer sheets will appear
+                            here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 COMPLETED PAGE
+            ================================================== -->
+
+            <section
+                class="page-section"
+                id="completedSection"
+            >
+
+                <div class="page-header simple">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            EVALUATION HISTORY
+                        </div>
+
+                        <h1>
+                            Completed <span>Evaluations</span>
+                        </h1>
+
+                        <p>
+                            Review evaluations that you have already
+                            submitted.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="empty-placeholder">
+
+                        <div class="placeholder-icon green-placeholder">
+                            ✓
+                        </div>
+
+                        <h2>
+                            Completed Evaluations
+                        </h2>
+
+                        <p>
+                            Your completed evaluations will appear
+                            here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 AI ASSISTANCE PAGE
+            ================================================== -->
+
+            <section
+                class="page-section"
+                id="aiAssistanceSection"
+            >
+
+                <div class="page-header simple">
+
+                    <div>
+
+                        <div class="eyebrow purple-eyebrow">
+                            AI SUPPORT
+                        </div>
+
+                        <h1>
+                            AI <span>Assistance</span>
+                        </h1>
+
+                        <p>
+                            AI tools available during answer
+                            evaluation.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-tools-grid">
+
+                    <div class="ai-tool-card">
+
+                        <div class="ai-tool-icon">
+                            ✦
+                        </div>
+
+                        <h3>
+                            Rubric Matching
+                        </h3>
+
+                        <p>
+                            Compare student responses against the
+                            official evaluation rubric.
+                        </p>
+
+                        <span class="tool-status">
+                            Available
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-tool-card">
+
+                        <div class="ai-tool-icon">
+                            ◇
+                        </div>
+
+                        <h3>
+                            Answer Analysis
+                        </h3>
+
+                        <p>
+                            Identify relevant concepts and important
+                            answer points.
+                        </p>
+
+                        <span class="tool-status">
+                            Available
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-tool-card">
+
+                        <div class="ai-tool-icon">
+                            !
+                        </div>
+
+                        <h3>
+                            Marking Anomaly Detection
+                        </h3>
+
+                        <p>
+                            Detect unusual scoring patterns that may
+                            require review.
+                        </p>
+
+                        <span class="tool-status">
+                            Available
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <footer class="app-footer">
+
+                <span>
+                    Pariksha Setu
+                </span>
+
+                <span>
+                    AI-assisted examination evaluation
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script src="language.js"></script>
+    <script src="evaluator.js"></script>
+
+</body>
+
+</html>
