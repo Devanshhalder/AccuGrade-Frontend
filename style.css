@@ -3414,3 +3414,195 @@ body {
         min-width: 48px;
     }
 }
+/* =========================================================
+   ACCUGRADE — HEAVY BRAND ANIMATION
+   ========================================================= */
+
+.logo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    isolation: isolate;
+}
+
+/* Main AccuGrade text */
+.logo-text {
+    position: relative;
+    display: inline-block;
+
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: -1.8px;
+    line-height: 1;
+
+    /* Animated blue gradient */
+    background: linear-gradient(
+        110deg,
+        #123c91 0%,
+        #2563eb 20%,
+        #60a5fa 40%,
+        #ffffff 50%,
+        #38bdf8 60%,
+        #2563eb 80%,
+        #123c91 100%
+    );
+
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation:
+        accugradeGradient 4s ease-in-out infinite,
+        accugradeFloat 3.5s ease-in-out infinite;
+
+    filter:
+        drop-shadow(0 0 8px rgba(37, 99, 235, 0.25))
+        drop-shadow(0 0 20px rgba(37, 99, 235, 0.15));
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   GLOW AURA BEHIND BRAND
+   ========================================================= */
+
+.logo::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 125%;
+    height: 180%;
+
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(37, 99, 235, 0.24) 0%,
+            rgba(59, 130, 246, 0.12) 30%,
+            transparent 70%
+        );
+
+    filter: blur(18px);
+
+    animation: accugradeAura 3s ease-in-out infinite;
+
+    z-index: -1;
+}
+
+
+/* =========================================================
+   FLOATING PARTICLE / DATA EFFECT
+   ========================================================= */
+
+.logo::after {
+    content: "";
+
+    position: absolute;
+
+    left: -18px;
+    right: -18px;
+    top: -16px;
+    bottom: -16px;
+
+    background:
+        radial-gradient(circle at 8% 35%, rgba(37,99,235,.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 22% 80%, rgba(56,189,248,.7) 0 1.5px, transparent 3px),
+        radial-gradient(circle at 42% 10%, rgba(96,165,250,.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 68% 90%, rgba(37,99,235,.8) 0 1.5px, transparent 3px),
+        radial-gradient(circle at 84% 25%, rgba(56,189,248,.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 96% 65%, rgba(37,99,235,.7) 0 1.5px, transparent 3px);
+
+    opacity: 0.8;
+
+    animation: accugradeParticles 5s linear infinite;
+
+    pointer-events: none;
+    z-index: -1;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes accugradeGradient {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@keyframes accugradeFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-3px) scale(1.015);
+    }
+}
+
+
+@keyframes accugradeAura {
+
+    0%,
+    100% {
+        opacity: 0.45;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+}
+
+
+@keyframes accugradeParticles {
+
+    0% {
+        transform: translateY(8px) scale(0.95);
+        opacity: 0.35;
+    }
+
+    50% {
+        transform: translateY(-8px) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(8px) scale(0.95);
+        opacity: 0.35;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .logo-text {
+        font-size: 38px;
+        letter-spacing: -1.3px;
+    }
+}
