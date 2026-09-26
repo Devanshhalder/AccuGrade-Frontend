@@ -1296,7 +1296,7 @@
             document.getElementById("submitBtn");
 
 
-        form.addEventListener("submit", function (event) {
+        form.addEventListener("submit", async function (event) {
 
             event.preventDefault();
 
@@ -1401,110 +1401,108 @@
 
             /* Loading state */
 
-            submitBtn.classList.add("loading");
-            submitBtn.textContent = "Creating Account...";
+            /* Loading state */
+
+submitBtn.classList.add("loading");
+submitBtn.textContent = "Creating Account...";
+
+try {
+
+    const response = await fetch(
+        "https://accugrade-backend-production.up.railway.app/auth/register",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: firstName + " " + lastName,
+                email: email,
+                password: password,
+                role: role
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+        showError(
+            data.detail ||
+            data.message ||
+            "Registration failed. Please try again."
+        );
+
+        submitBtn.classList.remove("loading");
+        submitBtn.textContent = "Create Account";
+
+        return;
+    }
+
+    /* Registration successful */
+
+    message.className = "message success";
+
+    message.textContent =
+        "Account created successfully. Redirecting...";
+
+    submitBtn.textContent = "Account Created";
 
 
-            setTimeout(function () {
+    /* Save backend user */
 
-                const newUser = {
-
-                    id:
-                        Date.now(),
-
-                    firstName:
-                        firstName,
-
-                    lastName:
-                        lastName,
-
-                    name:
-                        firstName + " " + lastName,
-
-                    email:
-                        email,
-
-                    role:
-                        role,
-
-                    password:
-                        password,
-
-                    createdAt:
-                        new Date().toISOString()
-
-                };
+    localStorage.setItem(
+        "accuGradeCurrentUser",
+        JSON.stringify(data.user)
+    );
 
 
-                users.push(newUser);
+    /* Redirect according to role */
 
+    setTimeout(function () {
 
-                localStorage.setItem(
-                    "accuGradeUsers",
-                    JSON.stringify(users)
-                );
+        if (data.user.role === "admin") {
 
+            window.location.href =
+                "admin.html";
 
-                /* Save current user */
+        } else {
 
-                localStorage.setItem(
-                    "accuGradeCurrentUser",
-                    JSON.stringify(newUser)
-                );
-
-
-                message.className =
-                    "message success";
-
-                message.textContent =
-                    "Account created successfully. Redirecting...";
-
-
-                submitBtn.textContent =
-                    "Account Created";
-
-
-                /*
-                    Redirect according to role
-                */
-
-                setTimeout(function () {
-
-                    if (role === "admin") {
-
-                        window.location.href =
-                            "ADMIN/admin.html";
-
-                    } else {
-
-                        window.location.href =
-                            "EVALUATOR/evaluator.html";
-
-                    }
-
-                }, 900);
-
-
-            }, 650);
-
-        });
-
-
-        /* ==========================================
-           ERROR MESSAGE
-        ========================================== */
-
-        function showError(text) {
-
-            message.className =
-                "message error";
-
-            message.textContent =
-                text;
+            window.location.href =
+                "evaluator.html";
 
         }
 
-    </script>
+    }, 900);
+
+
+} catch (error) {
+
+    console.error("Registration error:", error);
+
+    showError(
+        "Cannot connect to AccuGrade backend. Make sure the backend is running."
+    );
+
+    submitBtn.classList.remove("loading");
+    submitBtn.textContent = "Create Account";
+}
+
+
+/* ==========================================
+   ERROR MESSAGE
+========================================== */
+
+function showError(text) {
+
+    message.className = "message error";
+
+    message.textContent = text;
+
+}});
+
+</script>
 
 </body>
 </html>

@@ -5,6 +5,14 @@
 
 
 /* =========================================================
+   API CONFIGURATION
+========================================================= */
+
+const API_BASE_URL =
+    "https://accugrade-backend-production.up.railway.app";
+
+
+/* =========================================================
    DOM
 ========================================================= */
 
@@ -25,6 +33,8 @@ const pageButtons =
 const batchState = {
 
     answerKey: null,
+
+    batchId: null,
 
     answerSheets: [],
 
@@ -53,6 +63,7 @@ function showPage(pageId) {
 
     const selectedPage =
         document.getElementById(pageId);
+
 
     if (!selectedPage) {
         return;
@@ -156,6 +167,7 @@ function initialiseBatchPage() {
         return;
     }
 
+
     batchPageInitialised = true;
 
     initialiseUploadZones();
@@ -194,6 +206,7 @@ function initialiseUploadZones() {
             });
 
         }
+
         else {
 
             setupUploadZone({
@@ -218,20 +231,28 @@ function initialiseUploadZones() {
 ========================================================= */
 
 function setupUploadZone({
+
     zone,
+
     multiple,
+
     type
+
 }) {
 
     if (!zone) {
+
         return;
+
     }
 
 
     /* Prevent duplicate initialisation */
 
     if (zone.dataset.initialised === "true") {
+
         return;
+
     }
 
     zone.dataset.initialised = "true";
@@ -244,15 +265,20 @@ function setupUploadZone({
     const fileInput =
         document.createElement("input");
 
+
     fileInput.type = "file";
+
 
     fileInput.accept =
         ".pdf,.png,.jpg,.jpeg";
 
+
     fileInput.multiple =
         multiple;
 
+
     fileInput.hidden = true;
+
 
     document.body.appendChild(fileInput);
 
@@ -268,7 +294,9 @@ function setupUploadZone({
     if (browseButton) {
 
         browseButton.addEventListener(
+
             "click",
+
             (event) => {
 
                 event.stopPropagation();
@@ -276,6 +304,7 @@ function setupUploadZone({
                 fileInput.click();
 
             }
+
         );
 
     }
@@ -286,18 +315,24 @@ function setupUploadZone({
     ----------------------------------------------------- */
 
     zone.addEventListener(
+
         "click",
+
         (event) => {
 
             if (
                 event.target.closest("button")
             ) {
+
                 return;
+
             }
+
 
             fileInput.click();
 
         }
+
     );
 
 
@@ -306,7 +341,9 @@ function setupUploadZone({
     ----------------------------------------------------- */
 
     fileInput.addEventListener(
+
         "change",
+
         () => {
 
             const files =
@@ -314,17 +351,26 @@ function setupUploadZone({
                     fileInput.files || []
                 );
 
+
             if (!files.length) {
+
                 return;
+
             }
 
+
             handleFiles(
+
                 files,
+
                 zone,
+
                 type
+
             );
 
         }
+
     );
 
 
@@ -333,7 +379,9 @@ function setupUploadZone({
     ----------------------------------------------------- */
 
     zone.addEventListener(
+
         "dragover",
+
         (event) => {
 
             event.preventDefault();
@@ -341,6 +389,7 @@ function setupUploadZone({
             zone.dataset.dragging = "true";
 
         }
+
     );
 
 
@@ -349,12 +398,15 @@ function setupUploadZone({
     ----------------------------------------------------- */
 
     zone.addEventListener(
+
         "dragleave",
+
         () => {
 
             zone.dataset.dragging = "false";
 
         }
+
     );
 
 
@@ -363,7 +415,9 @@ function setupUploadZone({
     ----------------------------------------------------- */
 
     zone.addEventListener(
+
         "drop",
+
         (event) => {
 
             event.preventDefault();
@@ -378,17 +432,24 @@ function setupUploadZone({
 
 
             if (!files.length) {
+
                 return;
+
             }
 
 
             handleFiles(
+
                 files,
+
                 zone,
+
                 type
+
             );
 
         }
+
     );
 
 }
@@ -399,9 +460,13 @@ function setupUploadZone({
 ========================================================= */
 
 function handleFiles(
+
     files,
+
     zone,
+
     type
+
 ) {
 
     const validFiles =
@@ -423,8 +488,11 @@ function handleFiles(
     if (!validFiles.length) {
 
         showUploadMessage(
+
             zone,
+
             "Unsupported file format"
+
         );
 
         return;
@@ -441,16 +509,23 @@ function handleFiles(
         const file =
             validFiles[0];
 
+
         batchState.answerKey =
             file;
 
+
         updateUploadZone(
+
             zone,
+
             [
                 file
             ],
+
             "Answer key ready"
+
         );
+
 
         return;
 
@@ -466,10 +541,15 @@ function handleFiles(
         batchState.answerSheets =
             validFiles;
 
+
         updateUploadZone(
+
             zone,
+
             validFiles,
+
             "Answer sheets ready"
+
         );
 
     }
@@ -482,16 +562,22 @@ function handleFiles(
 ========================================================= */
 
 function updateUploadZone(
+
     zone,
+
     files,
+
     status
+
 ) {
 
     const title =
         zone.querySelector("strong");
 
+
     const subtitle =
         zone.querySelector("span");
+
 
     const button =
         zone.querySelector("button");
@@ -513,6 +599,7 @@ function updateUploadZone(
                 files[0].name;
 
         }
+
         else {
 
             subtitle.textContent =
@@ -541,6 +628,7 @@ function updateUploadZone(
     zone.style.borderColor =
         "#22c55e";
 
+
     zone.style.background =
         "#f0fdf4";
 
@@ -549,6 +637,7 @@ function updateUploadZone(
 
         zone.style.borderColor =
             "";
+
 
         zone.style.background =
             "";
@@ -563,15 +652,21 @@ function updateUploadZone(
 ========================================================= */
 
 function showUploadMessage(
+
     zone,
+
     message
+
 ) {
 
     const title =
         zone.querySelector("strong");
 
+
     if (!title) {
+
         return;
+
     }
 
 
@@ -586,6 +681,7 @@ function showUploadMessage(
     zone.style.borderColor =
         "#ef4444";
 
+
     zone.style.background =
         "#fff5f5";
 
@@ -595,8 +691,10 @@ function showUploadMessage(
         title.textContent =
             original;
 
+
         zone.style.borderColor =
             "";
+
 
         zone.style.background =
             "";
@@ -615,8 +713,11 @@ function initialiseEvaluatorSelection() {
     const evaluatorCard =
         document.querySelector(".assign-card");
 
+
     if (!evaluatorCard) {
+
         return;
+
     }
 
 
@@ -629,7 +730,9 @@ function initialiseEvaluatorSelection() {
     checkboxes.forEach((checkbox) => {
 
         checkbox.addEventListener(
+
             "change",
+
             () => {
 
                 updateEvaluatorState(
@@ -637,6 +740,7 @@ function initialiseEvaluatorSelection() {
                 );
 
             }
+
         );
 
     });
@@ -654,21 +758,30 @@ function initialiseEvaluatorSelection() {
 ========================================================= */
 
 function updateEvaluatorState(
+
     checkboxes
+
 ) {
 
     batchState.evaluators =
+
         Array.from(checkboxes)
+
             .filter(
+
                 checkbox =>
                     checkbox.checked
+
             )
+
             .map(
+
                 checkbox => {
 
                     const teacher =
                         checkbox
                             .closest(".teacher");
+
 
                     const name =
                         teacher
@@ -678,9 +791,11 @@ function updateEvaluatorState(
                             ?.textContent
                             .trim();
 
+
                     return name || "Evaluator";
 
                 }
+
             );
 
 }
@@ -699,14 +814,18 @@ function initialiseAIControls() {
 
 
     if (!controls.length) {
+
         return;
+
     }
 
 
     controls.forEach((control, index) => {
 
         control.addEventListener(
+
             "change",
+
             () => {
 
                 const keys = [
@@ -721,6 +840,7 @@ function initialiseAIControls() {
 
                 ];
 
+
                 const key =
                     keys[index];
 
@@ -733,6 +853,7 @@ function initialiseAIControls() {
                 }
 
             }
+
         );
 
     });
@@ -753,7 +874,9 @@ function initialiseLaunchButton() {
 
 
     if (!launchButton) {
+
         return;
+
     }
 
 
@@ -761,7 +884,9 @@ function initialiseLaunchButton() {
         launchButton.dataset.initialised ===
         "true"
     ) {
+
         return;
+
     }
 
 
@@ -770,8 +895,11 @@ function initialiseLaunchButton() {
 
 
     launchButton.addEventListener(
+
         "click",
+
         launchBatch
+
     );
 
 }
@@ -790,7 +918,9 @@ function launchBatch() {
 
 
     if (!launchButton) {
+
         return;
+
     }
 
 
@@ -807,11 +937,14 @@ function launchBatch() {
     const batchName =
         inputs[0]?.value.trim();
 
+
     const subject =
         inputs[1]?.value.trim();
 
+
     const examination =
         inputs[2]?.value.trim();
+
 
     const maxMarks =
         inputs[3]?.value.trim();
@@ -829,8 +962,11 @@ function launchBatch() {
     ) {
 
         showLaunchError(
+
             launchButton,
+
             "Complete batch information first"
+
         );
 
         return;
@@ -841,8 +977,11 @@ function launchBatch() {
     if (!batchState.answerKey) {
 
         showLaunchError(
+
             launchButton,
+
             "Upload the official answer key"
+
         );
 
         return;
@@ -855,8 +994,11 @@ function launchBatch() {
     ) {
 
         showLaunchError(
+
             launchButton,
+
             "Upload student answer sheets"
+
         );
 
         return;
@@ -869,8 +1011,33 @@ function launchBatch() {
     ) {
 
         showLaunchError(
+
             launchButton,
+
             "Assign at least one evaluator"
+
+        );
+
+        return;
+
+    }
+
+
+    const numericMaxMarks =
+        Number(maxMarks);
+
+
+    if (
+        !Number.isFinite(numericMaxMarks) ||
+        numericMaxMarks <= 0
+    ) {
+
+        showLaunchError(
+
+            launchButton,
+
+            "Enter a valid maximum mark"
+
         );
 
         return;
@@ -879,66 +1046,324 @@ function launchBatch() {
 
 
     /* -----------------------------------------------------
-       Processing state
+       Start real backend upload
     ----------------------------------------------------- */
+
+    uploadBatchToBackend({
+
+        batchName,
+
+        subject,
+
+        examination,
+
+        maxMarks: numericMaxMarks,
+
+        launchButton
+
+    });
+
+}
+
+
+/* =========================================================
+   UPLOAD BATCH TO FASTAPI BACKEND
+========================================================= */
+
+async function uploadBatchToBackend({
+
+    batchName,
+
+    subject,
+
+    examination,
+
+    maxMarks,
+
+    launchButton
+
+}) {
 
     launchButton.disabled =
         true;
 
-    launchButton.innerHTML =
-        `
-            <span>✦</span>
-            Initialising AI evaluation pipeline...
-        `;
 
-
-    /* -----------------------------------------------------
-       Simulated AI processing
-    ----------------------------------------------------- */
-
-    setTimeout(() => {
-
-        launchButton.innerHTML =
-            `
-                <span>◌</span>
-                Reading answer key...
-            `;
-
-    }, 900);
-
-
-    setTimeout(() => {
-
-        launchButton.innerHTML =
-            `
-                <span>◌</span>
-                Processing answer sheets...
-            `;
-
-    }, 1800);
-
-
-    setTimeout(() => {
+    try {
 
         launchButton.innerHTML =
             `
                 <span>✦</span>
-                Assigning evaluation workload...
+                Uploading answer key...
             `;
 
-    }, 2700);
+
+        const formData =
+            new FormData();
 
 
-    setTimeout(() => {
+        /* -------------------------------------------------
+           Batch information
+        ------------------------------------------------- */
 
-        completeBatchCreation(
-            batchName,
-            subject,
-            examination,
-            maxMarks
+        formData.append(
+
+            "batch_name",
+
+            batchName
+
         );
 
-    }, 3600);
+
+        formData.append(
+
+            "subject",
+
+            subject
+
+        );
+
+
+        formData.append(
+
+            "examination",
+
+            examination
+
+        );
+
+
+        formData.append(
+
+            "max_marks",
+
+            String(maxMarks)
+
+        );
+
+
+        /* -------------------------------------------------
+           Evaluators
+        ------------------------------------------------- */
+
+        formData.append(
+
+            "evaluators",
+
+            JSON.stringify(
+                batchState.evaluators
+            )
+
+        );
+
+
+        /* -------------------------------------------------
+           AI configuration
+        ------------------------------------------------- */
+
+        formData.append(
+
+            "ai_features",
+
+            JSON.stringify(
+                batchState.aiFeatures
+            )
+
+        );
+
+
+        /* -------------------------------------------------
+           Official answer key
+        ------------------------------------------------- */
+
+        formData.append(
+
+            "answer_key",
+
+            batchState.answerKey,
+
+            batchState.answerKey.name
+
+        );
+
+
+        /* -------------------------------------------------
+           Student answer sheets
+        ------------------------------------------------- */
+
+        batchState.answerSheets.forEach(
+
+            (file) => {
+
+                formData.append(
+
+                    "answer_sheets",
+
+                    file,
+
+                    file.name
+
+                );
+
+            }
+
+        );
+
+
+        launchButton.innerHTML =
+            `
+                <span>◌</span>
+                Uploading ${batchState.answerSheets.length} answer sheet(s)...
+            `;
+
+
+        const response =
+            await fetch(
+
+                `${API_BASE_URL}/admin/batches`,
+
+                {
+
+                    method: "POST",
+
+                    body: formData
+
+                }
+
+            );
+
+
+        let data = {};
+
+
+        try {
+
+            data =
+                await response.json();
+
+        }
+
+        catch (jsonError) {
+
+            data = {};
+
+        }
+
+
+        if (!response.ok) {
+
+            const backendMessage =
+                data.detail ||
+                data.message ||
+                "The backend could not create the evaluation batch.";
+
+
+            throw new Error(
+
+                backendMessage
+
+            );
+
+        }
+
+
+        /* -------------------------------------------------
+           Save server batch ID
+        ------------------------------------------------- */
+
+        batchState.batchId =
+            data.batch_id ||
+            data.id ||
+            data.batch?.id ||
+            null;
+
+
+        launchButton.innerHTML =
+            `
+                <span>✓</span>
+                Evaluation Pipeline Ready
+                <b>✓</b>
+            `;
+
+
+        launchButton.style.background =
+            "linear-gradient(120deg,#15803d,#22c55e)";
+
+
+        /* -------------------------------------------------
+           Update dashboard only after backend success
+        ------------------------------------------------- */
+
+        completeBatchCreation(
+
+            batchName,
+
+            subject,
+
+            examination,
+
+            maxMarks
+
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+
+            "Batch creation error:",
+
+            error
+
+        );
+
+
+        launchButton.disabled =
+            false;
+
+
+        launchButton.innerHTML =
+            `
+                <span>✦</span>
+                Launch Evaluation Batch
+            `;
+
+
+        launchButton.style.background =
+            "";
+
+
+        let message =
+            error?.message ||
+            "Could not create the evaluation batch.";
+
+
+        if (
+
+            error instanceof TypeError &&
+
+            message
+                .toLowerCase()
+                .includes("fetch")
+
+        ) {
+
+            message =
+                "Cannot connect to the backend. Make sure FastAPI is running on port 8000.";
+
+        }
+
+
+        showLaunchError(
+
+            launchButton,
+
+            message
+
+        );
+
+    }
 
 }
 
@@ -948,10 +1373,15 @@ function launchBatch() {
 ========================================================= */
 
 function completeBatchCreation(
+
     batchName,
+
     subject,
+
     examination,
+
     maxMarks
+
 ) {
 
     const launchButton =
@@ -965,12 +1395,14 @@ function completeBatchCreation(
         launchButton.disabled =
             true;
 
+
         launchButton.innerHTML =
             `
                 <span>✓</span>
                 Evaluation Pipeline Ready
                 <b>✓</b>
             `;
+
 
         launchButton.style.background =
             "linear-gradient(120deg,#15803d,#22c55e)";
@@ -983,9 +1415,13 @@ function completeBatchCreation(
     ----------------------------------------------------- */
 
     addBatchToDashboard(
+
         batchName,
+
         subject,
+
         examination
+
     );
 
 
@@ -1022,9 +1458,13 @@ function completeBatchCreation(
 ========================================================= */
 
 function addBatchToDashboard(
+
     batchName,
+
     subject,
+
     examination
+
 ) {
 
     const batchList =
@@ -1034,7 +1474,9 @@ function addBatchToDashboard(
 
 
     if (!batchList) {
+
         return;
+
     }
 
 
@@ -1086,6 +1528,7 @@ function addBatchToDashboard(
 
                 </div>
 
+
                 <div class="bar">
 
                     <i style="width:0%"></i>
@@ -1113,6 +1556,7 @@ function addBatchToDashboard(
     batch.style.opacity =
         "0";
 
+
     batch.style.transform =
         "translateY(-12px)";
 
@@ -1122,8 +1566,10 @@ function addBatchToDashboard(
         batch.style.transition =
             "all .5s cubic-bezier(.22,1,.36,1)";
 
+
         batch.style.opacity =
             "1";
+
 
         batch.style.transform =
             "translateY(0)";
@@ -1140,8 +1586,11 @@ function addBatchToDashboard(
 function getInitial(text) {
 
     if (!text) {
+
         return "E";
+
     }
+
 
     return text
         .trim()
@@ -1158,10 +1607,15 @@ function getInitial(text) {
 function escapeHTML(value) {
 
     return String(value)
+
         .replaceAll("&", "&amp;")
+
         .replaceAll("<", "&lt;")
+
         .replaceAll(">", "&gt;")
+
         .replaceAll('"', "&quot;")
+
         .replaceAll("'", "&#039;");
 
 }
@@ -1172,8 +1626,11 @@ function escapeHTML(value) {
 ========================================================= */
 
 function showLaunchError(
+
     button,
+
     message
+
 ) {
 
     const original =
@@ -1195,6 +1652,7 @@ function showLaunchError(
 
         button.innerHTML =
             original;
+
 
         button.style.background =
             "";
@@ -1220,16 +1678,21 @@ function animateNumbers() {
 
         const target =
             parseInt(
+
                 element.textContent
                     .replace(/,/g, ""),
+
                 10
+
             );
 
 
         if (
             Number.isNaN(target)
         ) {
+
             return;
+
         }
 
 
@@ -1245,23 +1708,31 @@ function animateNumbers() {
 
             const progress =
                 Math.min(
+
                     (time - start) /
                     duration,
+
                     1
+
                 );
 
 
             const eased =
                 1 -
                 Math.pow(
+
                     1 - progress,
+
                     3
+
                 );
 
 
             current =
                 Math.floor(
+
                     target * eased
+
                 );
 
 
@@ -1302,7 +1773,9 @@ function startSystemPulse() {
 
 
     if (!status) {
+
         return;
+
     }
 
 
@@ -1312,6 +1785,7 @@ function startSystemPulse() {
     setInterval(() => {
 
         active = !active;
+
 
         status.style.opacity =
             active ? "1" : ".35";
@@ -1336,7 +1810,9 @@ function initialiseAttentionItems() {
     items.forEach((item) => {
 
         item.addEventListener(
+
             "click",
+
             () => {
 
                 showPage(
@@ -1344,6 +1820,7 @@ function initialiseAttentionItems() {
                 );
 
             }
+
         );
 
     });
@@ -1366,7 +1843,9 @@ function initialiseCreateBatchButtons() {
     buttons.forEach((button) => {
 
         button.addEventListener(
+
             "click",
+
             () => {
 
                 showPage(
@@ -1374,6 +1853,7 @@ function initialiseCreateBatchButtons() {
                 );
 
             }
+
         );
 
     });
@@ -1390,21 +1870,28 @@ function resetBatchState() {
     batchState.answerKey =
         null;
 
+
+    batchState.batchId =
+        null;
+
+
     batchState.answerSheets =
         [];
+
 
     batchState.evaluators =
         [];
 
+
     batchState.aiFeatures = {
 
-        assistedMarking:true,
+        assistedMarking: true,
 
-        uncheckedAnswers:true,
+        uncheckedAnswers: true,
 
-        markingAnomalies:true,
+        markingAnomalies: true,
 
-        unusualScoring:true
+        unusualScoring: true
 
     };
 
@@ -1416,7 +1903,9 @@ function resetBatchState() {
 ========================================================= */
 
 document.addEventListener(
+
     "DOMContentLoaded",
+
     () => {
 
         /* Dashboard */
@@ -1444,6 +1933,7 @@ document.addEventListener(
         initialiseBatchPage();
 
     }
+
 );
 
 
@@ -1458,199 +1948,264 @@ showPage("dashboard");
    LANGUAGE SELECTOR
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
 
-    const languageButton =
-        document.getElementById("languageButton");
+    "DOMContentLoaded",
 
-    const languageMenu =
-        document.getElementById("languageMenu");
+    () => {
 
-    const languageSelector =
-        document.getElementById("languageSelector");
-
-    const languageCurrent =
-        document.querySelector(".language-current");
-
-    const languageOptions =
-        document.querySelectorAll(".language-option");
+        const languageButton =
+            document.getElementById(
+                "languageButton"
+            );
 
 
-    if (
-        !languageButton ||
-        !languageMenu ||
-        !languageSelector
-    ) {
-        return;
-    }
+        const languageMenu =
+            document.getElementById(
+                "languageMenu"
+            );
 
 
-    /* -----------------------------------------
-       LANGUAGE NAMES
-    ----------------------------------------- */
-
-    const languageNames = {
-        en: "English",
-        hi: "हिन्दी",
-        pa: "ਪੰਜਾਬੀ",
-        mr: "मराठी",
-        gu: "ગુજરાતી",
-        bn: "বাংলা",
-        ta: "தமிழ்",
-        te: "తెలుగు"
-    };
+        const languageSelector =
+            document.getElementById(
+                "languageSelector"
+            );
 
 
-    /* -----------------------------------------
-       GET SAVED LANGUAGE
-    ----------------------------------------- */
-
-    let currentLanguage =
-        localStorage.getItem("parikshaLanguage") || "en";
+        const languageCurrent =
+            document.querySelector(
+                ".language-current"
+            );
 
 
-    /* -----------------------------------------
-       UPDATE SELECTED LANGUAGE
-    ----------------------------------------- */
+        const languageOptions =
+            document.querySelectorAll(
+                ".language-option"
+            );
 
-    function updateLanguageUI(language) {
 
-        if (languageCurrent) {
+        if (
+            !languageButton ||
+            !languageMenu ||
+            !languageSelector
+        ) {
 
-            languageCurrent.textContent =
-                languageNames[language] ||
-                languageNames.en;
+            return;
 
         }
 
 
+        /* -----------------------------------------
+           LANGUAGE NAMES
+        ----------------------------------------- */
+
+        const languageNames = {
+
+            en: "English",
+
+            hi: "हिन्दी",
+
+            pa: "ਪੰਜਾਬੀ",
+
+            mr: "मराठी",
+
+            gu: "ગુજરાતી",
+
+            bn: "বাংলা",
+
+            ta: "தமிழ்",
+
+            te: "తెలుగు"
+
+        };
+
+
+        /* -----------------------------------------
+           GET SAVED LANGUAGE
+        ----------------------------------------- */
+
+        let currentLanguage =
+            localStorage.getItem(
+                "parikshaLanguage"
+            ) || "en";
+
+
+        /* -----------------------------------------
+           UPDATE SELECTED LANGUAGE
+        ----------------------------------------- */
+
+        function updateLanguageUI(language) {
+
+            if (languageCurrent) {
+
+                languageCurrent.textContent =
+                    languageNames[language] ||
+                    languageNames.en;
+
+            }
+
+
+            languageOptions.forEach((option) => {
+
+                option.classList.toggle(
+
+                    "active",
+
+                    option.dataset.language ===
+                    language
+
+                );
+
+            });
+
+        }
+
+
+        /* -----------------------------------------
+           OPEN / CLOSE MENU
+        ----------------------------------------- */
+
+
+        /* -----------------------------------------
+           SELECT LANGUAGE
+        ----------------------------------------- */
+
         languageOptions.forEach((option) => {
 
-            option.classList.toggle(
-                "active",
-                option.dataset.language === language
+            option.addEventListener(
+
+                "click",
+
+                () => {
+
+                    const language =
+                        option.dataset.language;
+
+
+                    if (!language) {
+
+                        return;
+
+                    }
+
+
+                    currentLanguage =
+                        language;
+
+
+                    /* Save globally */
+
+                    localStorage.setItem(
+
+                        "parikshaLanguage",
+
+                        language
+
+                    );
+
+
+                    /* Update selector */
+
+                    updateLanguageUI(
+                        language
+                    );
+
+
+                    /* Close menu */
+
+                    languageMenu.classList.remove(
+                        "open"
+                    );
+
+
+                    languageSelector.classList.remove(
+                        "open"
+                    );
+
+
+                    languageButton.setAttribute(
+
+                        "aria-expanded",
+
+                        "false"
+
+                    );
+
+
+                    /*
+                       Tell language.js to update
+                       the dashboard immediately.
+                    */
+
+                    document.dispatchEvent(
+
+                        new CustomEvent(
+
+                            "parikshaLanguageChanged",
+
+                            {
+
+                                detail: {
+
+                                    language:
+                                        language
+
+                                }
+
+                            }
+
+                        )
+
+                    );
+
+                }
+
             );
 
         });
 
-    }
 
+        /* -----------------------------------------
+           CLOSE WHEN CLICKING OUTSIDE
+        ----------------------------------------- */
 
-    /* -----------------------------------------
-       OPEN / CLOSE MENU
-    ----------------------------------------- */
+        document.addEventListener(
 
-    
-
-
-    /* -----------------------------------------
-       SELECT LANGUAGE
-    ----------------------------------------- */
-
-    languageOptions.forEach((option) => {
-
-        option.addEventListener(
             "click",
+
             () => {
-
-                const language =
-                    option.dataset.language;
-
-
-                if (!language) {
-                    return;
-                }
-
-
-                currentLanguage =
-                    language;
-
-
-                /* Save globally */
-
-                localStorage.setItem(
-                    "parikshaLanguage",
-                    language
-                );
-
-
-                /* Update selector */
-
-                updateLanguageUI(
-                    language
-                );
-
-
-                /* Close menu */
 
                 languageMenu.classList.remove(
                     "open"
                 );
 
+
                 languageSelector.classList.remove(
                     "open"
                 );
 
+
                 languageButton.setAttribute(
+
                     "aria-expanded",
+
                     "false"
-                );
 
-
-                /*
-                   Tell language.js to update
-                   the dashboard immediately.
-                */
-
-                document.dispatchEvent(
-                    new CustomEvent(
-                        "parikshaLanguageChanged",
-                        {
-                            detail: {
-                                language:
-                                    language
-                            }
-                        }
-                    )
                 );
 
             }
+
         );
 
-    });
 
+        /* -----------------------------------------
+           INITIAL STATE
+        ----------------------------------------- */
 
-    /* -----------------------------------------
-       CLOSE WHEN CLICKING OUTSIDE
-    ----------------------------------------- */
+        updateLanguageUI(
+            currentLanguage
+        );
 
-    document.addEventListener(
-        "click",
-        () => {
+    }
 
-            languageMenu.classList.remove(
-                "open"
-            );
-
-            languageSelector.classList.remove(
-                "open"
-            );
-
-            languageButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-        }
-    );
-
-
-    /* -----------------------------------------
-       INITIAL STATE
-    ----------------------------------------- */
-
-    updateLanguageUI(
-        currentLanguage
-    );
-
-});
+);

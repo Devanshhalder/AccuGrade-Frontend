@@ -9,6 +9,21 @@
 
     const STORAGE_KEY = "parikshaEvaluatorState";
     const LANGUAGE_KEY = "parikshaLanguage";
+    const API_BASE_URL = "https://accugrade-backend-production.up.railway.app";
+
+async function fetchRealAnswerSheets() {
+    const response = await fetch(
+        `${API_BASE_URL}/evaluator/answer-sheets`
+    );
+
+    if (!response.ok) {
+        throw new Error(
+            "Could not load answer sheets from backend."
+        );
+    }
+
+    return await response.json();
+}
 
     /* =========================================================
        QUESTION / RUBRIC DATA
@@ -1056,12 +1071,25 @@
     ========================================================= */
 
     function openEvaluation(
-        sheet,
-        readOnly = false
-    ) {
+    sheet,
+    readOnly = false
+) {
 
-        state.activeSheetId =
-            sheet.id;
+    // ============================================================
+    // REAL SHEET QUESTIONS
+    // ============================================================
+
+    const QUESTIONS = [
+        {
+            id: 1,
+            text: "Briefly state the first two of the Four Noble Truths taught by Gautama Buddha.",
+            maxMarks: Number(sheet.maxScore) || 2,
+            answer: "The first two Noble Truths are Dukkha and Samudaya. Dukkha states that life involves suffering, dissatisfaction, or unsatisfactoriness. Samudaya states that the cause of suffering is craving or desire."
+        }
+    ];
+
+    state.activeSheetId =
+        sheet.id;
 
         saveState();
 
@@ -1074,14 +1102,30 @@
         overlay.id =
             "evaluationOverlay";
 
-        const answers =
-            sheet.answers ||
-            QUESTIONS.map(q => ({
-                questionId: q.id,
-                marks: null,
-                answer: q.answer,
-                comment: ""
-            }));
+        const answers = QUESTIONS.map(q => {
+
+    const existing =
+        (sheet.answers || []).find(
+            answer =>
+                answer.questionId === q.id
+        );
+
+    return {
+        questionId: q.id,
+
+        marks:
+            existing?.marks ??
+            null,
+
+        answer:
+            existing?.answer ||
+            "",
+
+        comment:
+            existing?.comment ||
+            ""
+    };
+});
 
         overlay.innerHTML = `
 
@@ -1527,45 +1571,268 @@
                 getScore(answers);
         }
 
-        function suggestMarks() {
+        async function suggestMarks() {
 
-            const question =
-                QUESTIONS.find(
-                    q =>
-                        q.id ===
-                        activeQuestion
-                );
+    const question =
+        QUESTIONS.find(
+            q => q.id === activeQuestion
+        );
 
-            const answer =
-                currentAnswer();
+    if (!question) {
 
-            const suggestion =
-                Math.round(
-                    question.maxMarks *
-                    0.8 *
-                    2
-                ) / 2;
+        toast(
+            "Question data could not be found.",
+            "error"
+        );
 
-            answer.marks =
-                suggestion;
+        return;
+    }
 
-            $("#marksInput").value =
-                suggestion;
+    const button =
+        $("#aiSuggestButton");
 
-            $("#aiInsightText")
-                .textContent =
-                `Suggested ${suggestion}/${question.maxMarks} based on rubric coverage. Review before applying.`;
+    if (!button) {
+        return;
+    }
 
-            $("#currentScore")
-                .textContent =
-                getScore(answers);
+    button.disabled = true;
+    button.textContent =
+        "AI is evaluating...";
 
-            sheet.aiAssisted = true;
 
-            toast(
-                "AI suggestion generated — examiner review required"
+    try {
+
+        // ==================================================
+        // GET THE REAL ANSWER SHEET FROM BACKEND
+        // ==================================================
+
+        if (!sheet.backendSheetId) {
+
+            throw new Error(
+                "This evaluation is not connected to a backend answer sheet."
             );
         }
+
+
+        const sheetUrl =
+            `${API_BASE_URL}/answer-sheets/${sheet.backendSheetId}`;
+
+
+        const sheetResponse =
+            await fetch(
+                sheetUrl
+            );
+
+
+        if (!sheetResponse.ok) {
+
+            throw new Error(
+                `Could not load answer sheet. HTTP ${sheetResponse.status}`
+            );
+        }
+
+
+        const sheetBlob =
+            await sheetResponse.blob();
+
+
+        // ==================================================
+        // SEND REAL PDF TO BACKEND
+        // ==================================================
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "image",
+            sheetBlob,
+            sheet.filename ||
+            "student_answer_sheet.pdf"
+        );
+
+
+        formData.append(
+            "question",
+            question.text
+        );
+
+
+        formData.append(
+            "answer_key",
+            question.answer
+        );
+
+
+        formData.append(
+            "max_marks",
+            String(
+                question.maxMarks
+            )
+        );
+
+
+        // ==================================================
+        // CALL ACCUGRADE BACKEND
+        // ==================================================
+
+        const response =
+            await fetch(
+                `${API_BASE_URL}/evaluate`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                data.detail ||
+                `AI evaluation failed. HTTP ${response.status}`
+            );
+        }
+
+
+        // ==================================================
+        // GET EVALUATION RESULT
+        // ==================================================
+
+        const evaluation =
+            data.evaluation ||
+            data;
+
+
+        if (
+            !evaluation ||
+            evaluation.marks === undefined
+        ) {
+
+            throw new Error(
+                "Backend returned an invalid evaluation result."
+            );
+        }
+
+
+        // ==================================================
+        // SAVE EXTRACTED STUDENT ANSWER
+        // ==================================================
+
+        const answer = currentAnswer();
+
+if (answer) {
+
+    const awardedMarks = Number(evaluation.marks);
+
+    answer.answer =
+        evaluation.student_answer || "";
+
+    answer.marks =
+        awardedMarks;
+
+    answer.comment =
+        evaluation.reason || "";
+
+    // Explicitly synchronize the active answer
+    // with the answers array used by submitEvaluation().
+    const answerIndex =
+        answers.findIndex(
+            item =>
+                item.questionId === question.id
+        );
+
+    if (answerIndex !== -1) {
+
+        answers[answerIndex].answer =
+            evaluation.student_answer || "";
+
+        answers[answerIndex].marks =
+            awardedMarks;
+
+        answers[answerIndex].comment =
+            evaluation.reason || "";
+    }
+}
+
+
+        // ==================================================
+        // REFRESH THE QUESTION UI
+        // ==================================================
+
+        renderQuestion();
+
+
+        // ==================================================
+        // SHOW AI INSIGHT
+        // ==================================================
+
+        const insight =
+            $("#aiInsightText");
+
+
+        if (insight) {
+
+            const confidence =
+                Number(
+                    evaluation.confidence || 0
+                );
+
+
+            insight.textContent =
+                `${evaluation.reason || "AI evaluation completed."} ` +
+                `Confidence: ${Math.round(
+                    confidence * 100
+                )}%.`;
+        }
+
+
+        // ==================================================
+        // MARK SHEET AS AI ASSISTED
+        // ==================================================
+
+        sheet.aiAssisted =
+            true;
+
+
+        // ==================================================
+        // SUCCESS MESSAGE
+        // ==================================================
+
+        toast(
+            `AI suggested ${evaluation.marks}/${evaluation.max_marks}. Review before submitting.`
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "AI evaluation error:",
+            error
+        );
+
+
+        toast(
+            error.message ||
+            "AI evaluation failed.",
+            "error"
+        );
+
+
+    } finally {
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "✦ AI Suggest Marks";
+    }
+}
 
         function saveDraft() {
 
@@ -1715,7 +1982,7 @@
                     <div>
 
                         <span class="panel-eyebrow">
-                            PARIKSHA SETU AI
+                            AccuGrade AI
                         </span>
 
                         <h2>
@@ -2931,23 +3198,89 @@
        BOOT
     ========================================================= */
 
-    function boot() {
+    async function boot() {
 
-        state =
-            loadState();
+    cacheElements();
 
-        cacheElements();
+    injectFunctionalStyles();
 
-        injectFunctionalStyles();
+    bindEvents();
 
-        bindEvents();
+    try {
 
-        updateDashboard();
+        const realSheets =
+            await fetchRealAnswerSheets();
 
-        syncLanguageLabel();
+        state = {
+            sheets: realSheets.map(sheet => ({
+                id: String(sheet.sheet_id),
+                backendSheetId: sheet.sheet_id,
+                batchId: sheet.batch_id,
 
-        renderAIPage();
+                candidate:
+                    sheet.filename
+                        .replace(/\.[^/.]+$/, ""),
+
+                subject: sheet.subject,
+                batchName: sheet.batch_name,
+                examination: sheet.examination,
+
+                questions: 1,
+                maxScore: sheet.max_marks,
+
+                status:
+                    sheet.status === "completed"
+                        ? "completed"
+                        : "pending",
+
+                score: null,
+                aiAssisted: false,
+                submittedAt: null,
+
+                fileUrl:
+                    `${API_BASE_URL}${sheet.file_url}`,
+
+                answers: QUESTIONS.map(question => ({
+                    questionId: question.id,
+                    marks: null,
+                    answer: "",
+                    comment: ""
+                }))
+            })),
+
+            activeSheetId: null,
+
+            notifications: [
+                {
+                    id: 1,
+                    title: "Answer sheets loaded",
+                    text:
+                        `${realSheets.length} real answer sheet(s) loaded from the backend.`,
+                    read: false
+                }
+            ]
+        };
+
+    } catch (error) {
+
+        console.error(
+            "Could not load real answer sheets:",
+            error
+        );
+
+        state = loadState();
+
+        console.warn(
+            "Using local demo data because the backend could not be reached."
+        );
     }
+
+    updateDashboard();
+
+    syncLanguageLabel();
+
+    renderAIPage();
+}
 
     if (
         document.readyState ===
@@ -2959,7 +3292,7 @@
             boot
         );
 
-    } else {
+        } else {
 
         boot();
 

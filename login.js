@@ -62,7 +62,7 @@ const loginError = document.getElementById("loginError");
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", (event) => {
+    loginForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
@@ -117,7 +117,7 @@ if (loginForm) {
         }
 
 
-        // Clear error
+        // Clear previous error
         loginError.textContent = "";
 
 
@@ -129,40 +129,124 @@ if (loginForm) {
 
 
         // ----------------------------
-        // TEMPORARY DEMO LOGIN
+        // Login button state
         // ----------------------------
 
-        if (role === "admin") {
+        const submitButton =
+            loginForm.querySelector('button[type="submit"]');
 
-            window.location.href = "admin.html";
-
-        } else if (role === "evaluator") {
-
-            window.location.href = "evaluator.html";
-
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Signing In...";
         }
 
-    });
 
-}
+        try {
+
+            // ----------------------------
+            // Call AccuGrade Backend
+            // ----------------------------
+
+            const response = await fetch(
+                "https://accugrade-backend-production.up.railway.app/auth/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                }
+            );
 
 
-// ================================
-// FORGOT PASSWORD
-// ================================
+            const data = await response.json();
 
-const forgotPassword =
-    document.getElementById("forgotPassword");
 
-if (forgotPassword) {
+            // ----------------------------
+            // Backend rejected login
+            // ----------------------------
 
-    forgotPassword.addEventListener("click", (event) => {
+            if (!response.ok) {
 
-        event.preventDefault();
+                loginError.textContent =
+                    data.detail ||
+                    data.message ||
+                    "Invalid email or password.";
 
-        alert(
-            "Password recovery will be connected after the backend is added."
-        );
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = "Sign In";
+                }
+
+                return;
+            }
+
+
+            // ----------------------------
+            // Check selected role
+            // ----------------------------
+
+            if (data.user.role !== role) {
+
+                loginError.textContent =
+                    `This account is registered as ${data.user.role}. Please select the correct role.`;
+
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = "Sign In";
+                }
+
+                return;
+            }
+
+
+            // ----------------------------
+            // Save logged-in user
+            // ----------------------------
+
+            localStorage.setItem(
+                "accuGradeCurrentUser",
+                JSON.stringify(data.user)
+            );
+
+
+            // ----------------------------
+            // Redirect
+            // ----------------------------
+
+            if (data.user.role === "admin") {
+
+                window.location.href =
+                    "admin.html";
+
+            } else {
+
+                window.location.href =
+                    "evaluator.html";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+            loginError.textContent =
+                "Cannot connect to AccuGrade backend. Make sure the backend is running.";
+
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = "Sign In";
+            }
+
+        }
 
     });
 
