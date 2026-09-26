@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AccuGrade | Create Account</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blue: #1769ff;
+            --blue-dark: #0d47c9;
+            --blue-light: #eaf2ff;
+            --text: #172033;
+            --muted: #687386;
+            --border: #dce3ef;
+            --white: #ffffff;
+            --danger: #e5484d;
+            --success: #16875a;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 10% 10%, rgba(23, 105, 255, 0.10), transparent 28%),
+                radial-gradient(circle at 90% 90%, rgba(23, 105, 255, 0.08), transparent 30%),
+                #f7faff;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           BACKGROUND
+        ========================= */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0.55;
+        }
+
+        .orb.one {
+            width: 330px;
+            height: 330px;
+            background: rgba(23, 105, 255, 0.10);
+            top: -150px;
+            left: -100px;
+            animation: orbFloat1 8s ease-in-out infinite;
+        }
+
+        .orb.two {
+            width: 280px;
+            height: 280px;
+            background: rgba(77, 139, 255, 0.10);
+            right: -100px;
+            bottom: -100px;
+            animation: orbFloat2 10s ease-in-out infinite;
+        }
+
+        @keyframes orbFloat1 {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(30px, 25px);
+            }
+        }
+
+        @keyframes orbFloat2 {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(-25px, -30px);
+            }
+        }
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            padding: 25px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ACCUGRADE LOGO */
+
+        .logo {
+            position: relative;
+            display: inline-flex;
+            isolation: isolate;
+        }
+
+        .logo-text {
+            position: relative;
+            font-size: 34px;
+            line-height: 1;
+            font-weight: 850;
+            letter-spacing: -1.5px;
+
+            background: linear-gradient(
+                90deg,
+                #0d47c9,
+                #1769ff,
+                #4d8cff,
+                #1769ff,
+                #0d47c9
+            );
+
+            background-size: 300% auto;
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+
+            filter:
+                drop-shadow(0 4px 12px rgba(23, 105, 255, 0.18));
+
+            animation:
+                logoGradient 5s linear infinite,
+                logoFloat 3.5s ease-in-out infinite;
+        }
+
+        .logo::before {
+            content: "";
+            position: absolute;
+            inset: -12px -20px;
+            border-radius: 50%;
+            background: rgba(23, 105, 255, 0.08);
+            filter: blur(16px);
+            z-index: -1;
+            animation: logoAura 2.8s ease-in-out infinite;
+        }
+
+        @keyframes logoGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes logoAura {
+            0%, 100% {
+                transform: scale(0.9);
+                opacity: 0.35;
+            }
+
+            50% {
+                transform: scale(1.08);
+                opacity: 0.75;
+            }
+        }
+
+        /* =========================
+           LANGUAGE
+        ========================= */
+
+        .language {
+            position: relative;
+        }
+
+        .language-btn {
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(10px);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .language-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            transform: translateY(-1px);
+        }
+
+        .language-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 170px;
+            padding: 7px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(24, 48, 90, 0.14);
+
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: 0.2s ease;
+        }
+
+        .language.open .language-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            padding: 9px 10px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .language-option:hover {
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            position: relative;
+            z-index: 2;
+            width: min(1050px, 92%);
+            margin: 20px auto 60px;
+
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+
+            background: rgba(255,255,255,0.90);
+            backdrop-filter: blur(18px);
+
+            border: 1px solid rgba(220, 227, 239, 0.95);
+            border-radius: 24px;
+
+            box-shadow:
+                0 30px 80px rgba(29, 57, 104, 0.10),
+                0 8px 25px rgba(29, 57, 104, 0.05);
+
+            overflow: hidden;
+
+            animation: cardAppear 0.65s ease forwards;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* =========================
+           LEFT PANEL
+        ========================= */
+
+        .intro {
+            position: relative;
+            padding: 55px 42px;
+            background:
+                linear-gradient(
+                    145deg,
+                    #0d47c9 0%,
+                    #1769ff 55%,
+                    #4386ff 100%
+                );
+
+            color: white;
+            overflow: hidden;
+        }
+
+        .intro::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.18);
+            right: -120px;
+            top: -100px;
+            animation: circleRotate 15s linear infinite;
+        }
+
+        .intro::after {
+            content: "";
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.13);
+            left: -100px;
+            bottom: -90px;
+        }
+
+        @keyframes circleRotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .intro-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 7px 11px;
+            margin-bottom: 24px;
+
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 30px;
+
+            background: rgba(255,255,255,0.10);
+
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .pulse {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #8dffcf;
+            box-shadow: 0 0 0 5px rgba(141,255,207,0.13);
+            animation: pulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 4px rgba(141,255,207,0.10);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(141,255,207,0.18);
+            }
+        }
+
+        .intro h1 {
+            font-size: 42px;
+            line-height: 1.08;
+            letter-spacing: -1.4px;
+            margin-bottom: 18px;
+        }
+
+        .intro p {
+            color: rgba(255,255,255,0.82);
+            font-size: 15px;
+            line-height: 1.7;
+            max-width: 390px;
+        }
+
+        .features {
+            margin-top: 38px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            flex: 0 0 34px;
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+
+            display: grid;
+            place-items: center;
+
+            background: rgba(255,255,255,0.13);
+            border: 1px solid rgba(255,255,255,0.15);
+
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .feature strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .feature span {
+            display: block;
+            color: rgba(255,255,255,0.68);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-panel {
+            padding: 48px 48px 42px;
+        }
+
+        .form-heading {
+            margin-bottom: 28px;
+        }
+
+        .form-heading h2 {
+            font-size: 29px;
+            letter-spacing: -0.8px;
+            margin-bottom: 7px;
+        }
+
+        .form-heading p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .form {
+            display: grid;
+            gap: 17px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .field {
+            display: grid;
+            gap: 7px;
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #344054;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input,
+        .select {
+            width: 100%;
+            height: 46px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            background: #fbfcff;
+            color: var(--text);
+
+            padding: 0 13px;
+
+            font-size: 14px;
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .input:focus,
+        .select:focus {
+            background: white;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(23,105,255,0.10);
+        }
+
+        .password-input {
+            padding-right: 48px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            border: 0;
+            background: transparent;
+
+            color: #778195;
+            cursor: pointer;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .password-toggle:hover {
+            color: var(--blue);
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .role-option {
+            position: relative;
+        }
+
+        .role-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .role-card {
+            display: block;
+            padding: 12px 13px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            background: #fbfcff;
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .role-card strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .role-card span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .role-option input:checked + .role-card {
+            border-color: var(--blue);
+            background: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(23,105,255,0.07);
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+
+            margin-top: 1px;
+        }
+
+        .terms input {
+            margin-top: 2px;
+            accent-color: var(--blue);
+        }
+
+        .terms a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 48px;
+
+            border: 0;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #0d47c9,
+                    #1769ff,
+                    #4386ff
+                );
+
+            background-size: 200% auto;
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 750;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 24px rgba(23,105,255,0.22);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background-position 0.4s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 14px 30px rgba(23,105,255,0.28);
+            background-position: 100% center;
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn.loading {
+            opacity: 0.75;
+            pointer-events: none;
+        }
+
+        .signin {
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .signin a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 750;
+        }
+
+        .signin a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            display: none;
+            padding: 11px 13px;
+            border-radius: 9px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .message.error {
+            display: block;
+            color: #a51d22;
+            background: #fff1f1;
+            border: 1px solid #ffd0d2;
+        }
+
+        .message.success {
+            display: block;
+            color: #08643f;
+            background: #effcf6;
+            border: 1px solid #bdebd7;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 850px) {
+            .main {
+                grid-template-columns: 1fr;
+                width: min(650px, 92%);
+            }
+
+            .intro {
+                padding: 38px 35px;
+            }
+
+            .intro h1 {
+                font-size: 34px;
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-panel {
+                padding: 38px 35px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 20px 5%;
+            }
+
+            .logo-text {
+                font-size: 29px;
+            }
+
+            .main {
+                margin-top: 5px;
+                border-radius: 18px;
+            }
+
+            .intro {
+                padding: 32px 25px;
+            }
+
+            .intro h1 {
+                font-size: 30px;
+            }
+
+            .intro p {
+                font-size: 14px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .form-panel {
+                padding: 32px 24px;
+            }
+
+            .form-heading h2 {
+                font-size: 25px;
+            }
+
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="background">
+        <div class="orb one"></div>
+        <div class="orb two"></div>
+    </div>
+
+    <!-- Top Bar -->
+    <header class="topbar">
+
+        <div class="logo">
+            <span class="logo-text">AccuGrade</span>
+        </div>
+
+        <div class="language" id="languageBox">
+
+            <button
+                type="button"
+                class="language-btn"
+                id="languageBtn"
+            >
+                English ▾
+            </button>
+
+            <div class="language-menu" id="languageMenu">
+
+                <button class="language-option" data-lang="English">
+                    English
+                </button>
+
+                <button class="language-option" data-lang="Hindi">
+                    हिन्दी
+                </button>
+
+                <button class="language-option" data-lang="Punjabi">
+                    ਪੰਜਾਬੀ
+                </button>
+
+                <button class="language-option" data-lang="Marathi">
+                    मराठी
+                </button>
+
+                <button class="language-option" data-lang="Gujarati">
+                    ગુજરાતી
+                </button>
+
+                <button class="language-option" data-lang="Bengali">
+                    বাংলা
+                </button>
+
+                <button class="language-option" data-lang="Tamil">
+                    தமிழ்
+                </button>
+
+                <button class="language-option" data-lang="Telugu">
+                    తెలుగు
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Left -->
+        <section class="intro">
+
+            <div class="intro-content">
+
+                <div class="intro-badge">
+                    <span class="pulse"></span>
+                    AI-POWERED EVALUATION
+                </div>
+
+                <h1>
+                    Create your<br>
+                    AccuGrade account.
+                </h1>
+
+                <p>
+                    Join the digital examination ecosystem built to
+                    make evaluation faster, more consistent and
+                    transparent.
+                </p>
+
+
+                <div class="features">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            AI
+                        </div>
+
+                        <div>
+                            <strong>AI Assistance</strong>
+                            <span>
+                                Get intelligent evaluation support
+                                while keeping the examiner in control.
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <strong>Digital Evaluation</strong>
+                            <span>
+                                Evaluate answer sheets through a
+                                structured digital workflow.
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            #
+                        </div>
+
+                        <div>
+                            <strong>Secure Workspace</strong>
+                            <span>
+                                Keep examination evaluation organised
+                                and role-based.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Form -->
+        <section class="form-panel">
+
+            <div class="form-heading">
+
+                <h2>Create Account</h2>
+
+                <p>
+                    Enter your details to get started with AccuGrade.
+                </p>
+
+            </div>
+
+
+            <form class="form" id="registerForm">
+
+                <div class="field-row">
+
+                    <div class="field">
+
+                        <label for="firstName">
+                            First Name
+                        </label>
+
+                        <input
+                            class="input"
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            placeholder="Enter first name"
+                            autocomplete="given-name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="lastName">
+                            Last Name
+                        </label>
+
+                        <input
+                            class="input"
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            placeholder="Enter last name"
+                            autocomplete="family-name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        class="input"
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="name@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Select Role
+                    </label>
+
+                    <div class="role-options">
+
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                id="evaluator"
+                                name="role"
+                                value="evaluator"
+                                checked
+                            >
+
+                            <label
+                                class="role-card"
+                                for="evaluator"
+                            >
+                                <strong>Evaluator</strong>
+                                <span>
+                                    Evaluate assigned answer sheets
+                                </span>
+                            </label>
+
+                        </div>
+
+
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                id="admin"
+                                name="role"
+                                value="admin"
+                            >
+
+                            <label
+                                class="role-card"
+                                for="admin"
+                            >
+                                <strong>Admin</strong>
+                                <span>
+                                    Manage evaluation operations
+                                </span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <input
+                            class="input password-input"
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="password"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <input
+                            class="input password-input"
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="confirmPassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <label class="terms">
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        required
+                    >
+
+                    <span>
+                        I agree to the
+                        <a href="#" onclick="return false;">
+                            AccuGrade terms
+                        </a>
+                        and understand that this prototype uses
+                        browser storage for account data.
+                    </span>
+
+                </label>
+
+
+                <div
+                    class="message"
+                    id="message"
+                ></div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    id="submitBtn"
+                >
+                    Create Account
+                </button>
+
+
+                <div class="signin">
+
+                    Already have an account?
+                    <a href="index.html">
+                        Sign in
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        /* ==========================================
+           LANGUAGE DROPDOWN
+        ========================================== */
+
+        const languageBox =
+            document.getElementById("languageBox");
+
+        const languageBtn =
+            document.getElementById("languageBtn");
+
+        const languageOptions =
+            document.querySelectorAll(".language-option");
+
+
+        languageBtn.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            languageBox.classList.toggle("open");
+
+        });
+
+
+        document.addEventListener("click", function () {
+
+            languageBox.classList.remove("open");
+
+        });
+
+
+        languageOptions.forEach(function (option) {
+
+            option.addEventListener("click", function () {
+
+                const selectedLanguage =
+                    this.dataset.lang;
+
+                languageBtn.textContent =
+                    selectedLanguage + " ▾";
+
+                localStorage.setItem(
+                    "parikshaLanguage",
+                    selectedLanguage
+                );
+
+                languageBox.classList.remove("open");
+
+            });
+
+        });
+
+
+        /* ==========================================
+           LOAD SAVED LANGUAGE
+        ========================================== */
+
+        const savedLanguage =
+            localStorage.getItem("parikshaLanguage");
+
+        if (savedLanguage) {
+
+            languageBtn.textContent =
+                savedLanguage + " ▾";
+
+        }
+
+
+        /* ==========================================
+           PASSWORD SHOW / HIDE
+        ========================================== */
+
+        document
+            .querySelectorAll(".password-toggle")
+            .forEach(function (button) {
+
+                button.addEventListener("click", function () {
+
+                    const input =
+                        document.getElementById(
+                            this.dataset.target
+                        );
+
+                    if (input.type === "password") {
+
+                        input.type = "text";
+                        this.textContent = "Hide";
+
+                    } else {
+
+                        input.type = "password";
+                        this.textContent = "Show";
+
+                    }
+
+                });
+
+            });
+
+
+        /* ==========================================
+           REGISTRATION
+        ========================================== */
+
+        const form =
+            document.getElementById("registerForm");
+
+        const message =
+            document.getElementById("message");
+
+        const submitBtn =
+            document.getElementById("submitBtn");
+
+
+        form.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            message.className = "message";
+            message.textContent = "";
+
+
+            const firstName =
+                document.getElementById("firstName")
+                    .value
+                    .trim();
+
+            const lastName =
+                document.getElementById("lastName")
+                    .value
+                    .trim();
+
+            const email =
+                document.getElementById("email")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+            const password =
+                document.getElementById("password")
+                    .value;
+
+            const confirmPassword =
+                document.getElementById("confirmPassword")
+                    .value;
+
+            const role =
+                document.querySelector(
+                    'input[name="role"]:checked'
+                ).value;
+
+
+            /* Validation */
+
+            if (
+                firstName.length < 2 ||
+                lastName.length < 2
+            ) {
+
+                showError(
+                    "Please enter your first and last name."
+                );
+
+                return;
+
+            }
+
+
+            if (password.length < 6) {
+
+                showError(
+                    "Password must contain at least 6 characters."
+                );
+
+                return;
+
+            }
+
+
+            if (password !== confirmPassword) {
+
+                showError(
+                    "Passwords do not match."
+                );
+
+                return;
+
+            }
+
+
+            /* Existing users */
+
+            const users =
+                JSON.parse(
+                    localStorage.getItem("accuGradeUsers") || "[]"
+                );
+
+
+            const existingUser =
+                users.find(function (user) {
+
+                    return user.email === email;
+
+                });
+
+
+            if (existingUser) {
+
+                showError(
+                    "An account with this email already exists."
+                );
+
+                return;
+
+            }
+
+
+            /* Loading state */
+
+            submitBtn.classList.add("loading");
+            submitBtn.textContent = "Creating Account...";
+
+
+            setTimeout(function () {
+
+                const newUser = {
+
+                    id:
+                        Date.now(),
+
+                    firstName:
+                        firstName,
+
+                    lastName:
+                        lastName,
+
+                    name:
+                        firstName + " " + lastName,
+
+                    email:
+                        email,
+
+                    role:
+                        role,
+
+                    password:
+                        password,
+
+                    createdAt:
+                        new Date().toISOString()
+
+                };
+
+
+                users.push(newUser);
+
+
+                localStorage.setItem(
+                    "accuGradeUsers",
+                    JSON.stringify(users)
+                );
+
+
+                /* Save current user */
+
+                localStorage.setItem(
+                    "accuGradeCurrentUser",
+                    JSON.stringify(newUser)
+                );
+
+
+                message.className =
+                    "message success";
+
+                message.textContent =
+                    "Account created successfully. Redirecting...";
+
+
+                submitBtn.textContent =
+                    "Account Created";
+
+
+                /*
+                    Redirect according to role
+                */
+
+                setTimeout(function () {
+
+                    if (role === "admin") {
+
+                        window.location.href =
+                            "ADMIN/admin.html";
+
+                    } else {
+
+                        window.location.href =
+                            "EVALUATOR/evaluator.html";
+
+                    }
+
+                }, 900);
+
+
+            }, 650);
+
+        });
+
+
+        /* ==========================================
+           ERROR MESSAGE
+        ========================================== */
+
+        function showError(text) {
+
+            message.className =
+                "message error";
+
+            message.textContent =
+                text;
+
+        }
+
+    </script>
+
+</body>
+</html>
