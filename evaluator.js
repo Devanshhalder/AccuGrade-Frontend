@@ -29,7 +29,7 @@ async function fetchRealAnswerSheets() {
        QUESTION / RUBRIC DATA
     ========================================================= */
 
-    const QUESTIONS = [
+    const DEMO_QUESTIONS = [
         {
             id: 1,
             text: "Define the concept and explain its significance.",
@@ -195,7 +195,7 @@ async function fetchRealAnswerSheets() {
                     ? `2026-09-${String((i % 25) + 1).padStart(2, "0")}`
                     : null,
 
-                answers: QUESTIONS.map((q, qIndex) => ({
+                answers: DEMO_QUESTIONS.map(question => ({
                     questionId: q.id,
 
                     marks: completed
@@ -1079,14 +1079,7 @@ async function fetchRealAnswerSheets() {
     // REAL SHEET QUESTIONS
     // ============================================================
 
-    const QUESTIONS = [
-        {
-            id: 1,
-            text: "Briefly state the first two of the Four Noble Truths taught by Gautama Buddha.",
-            maxMarks: Number(sheet.maxScore) || 2,
-            answer: "The first two Noble Truths are Dukkha and Samudaya. Dukkha states that life involves suffering, dissatisfaction, or unsatisfactoriness. Samudaya states that the cause of suffering is craving or desire."
-        }
-    ];
+    
 
     state.activeSheetId =
         sheet.id;
@@ -1102,30 +1095,19 @@ async function fetchRealAnswerSheets() {
         overlay.id =
             "evaluationOverlay";
 
-        const answers = QUESTIONS.map(q => {
+        const question = {
+    id: 1,
+    text: sheet.question || "",
+    maxMarks: Number(sheet.maxScore) || 0,
+    answer: sheet.answerKey || ""
+};
 
-    const existing =
-        (sheet.answers || []).find(
-            answer =>
-                answer.questionId === q.id
-        );
-
-    return {
-        questionId: q.id,
-
-        marks:
-            existing?.marks ??
-            null,
-
-        answer:
-            existing?.answer ||
-            "",
-
-        comment:
-            existing?.comment ||
-            ""
-    };
-});
+const answers = [{
+    questionId: question.id,
+    marks: null,
+    answer: "",
+    comment: ""
+}];
 
         overlay.innerHTML = `
 
@@ -1379,12 +1361,12 @@ async function fetchRealAnswerSheets() {
 
         function renderQuestion() {
 
-            const question =
-                QUESTIONS.find(
-                    q =>
-                        q.id ===
-                        activeQuestion
-                );
+            const question = {
+    id: 1,
+    text: sheet.question || "",
+    maxMarks: Number(sheet.maxScore) || 0,
+    answer: sheet.answerKey || ""
+};
 
             const answer =
                 currentAnswer();
@@ -1533,12 +1515,12 @@ async function fetchRealAnswerSheets() {
 
             if (!input) return;
 
-            const question =
-                QUESTIONS.find(
-                    q =>
-                        q.id ===
-                        activeQuestion
-                );
+            const question = {
+    id: 1,
+    text: sheet.question || "",
+    maxMarks: Number(sheet.maxScore) || 0,
+    answer: sheet.answerKey || ""
+};
 
             const answer =
                 currentAnswer();
@@ -1573,10 +1555,12 @@ async function fetchRealAnswerSheets() {
 
         async function suggestMarks() {
 
-    const question =
-        QUESTIONS.find(
-            q => q.id === activeQuestion
-        );
+    const question = {
+    id: 1,
+    text: sheet.question || "",
+    maxMarks: Number(sheet.maxScore) || 0,
+    answer: sheet.answerKey || ""
+};
 
     if (!question) {
 
@@ -3225,7 +3209,7 @@ if (answer) {
                 batchName: sheet.batch_name,
                 examination: sheet.examination,
 
-                questions: 1,
+                questions: 0,
                 maxScore: sheet.max_marks,
 
                 status:
@@ -3240,12 +3224,9 @@ if (answer) {
                 fileUrl:
                     `${API_BASE_URL}${sheet.file_url}`,
 
-                answers: QUESTIONS.map(question => ({
-                    questionId: question.id,
-                    marks: null,
-                    answer: "",
-                    comment: ""
-                }))
+                question: sheet.question || "",
+answerKey: sheet.answer_key || "",
+answers: []
             })),
 
             activeSheetId: null,
