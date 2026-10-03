@@ -1200,7 +1200,12 @@ const answers = [{
                         </div>
 
                         ${
-                            QUESTIONS.map(
+                            [{
+    id: 1,
+    text: sheet.question || "",
+    maxMarks: Number(sheet.maxScore) || 0,
+    answer: sheet.answerKey || ""
+}].map(
                                 q => `
                                     <button
                                         class="question-nav ${
